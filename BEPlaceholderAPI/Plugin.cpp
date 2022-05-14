@@ -15,8 +15,10 @@ inline void CheckProtocolVersion() {
 #endif // TARGET_BDS_PROTOCOL_VERSION
 }
 void debug();
+void RegCommand();
 void PluginInit()
 {
     debug();
+    RegCommand();
     CheckProtocolVersion();
 }

@@ -3,8 +3,9 @@
 #include "ScheduleAPI.h"
 std::unordered_map<string, PlaceholderAPI>  GlobalPAPI;
 std::unordered_map<string, PlaceholderAPI>  updatePlaceholders;
+#define EXPORTAPI(T) RemoteCall::exportAs(PLUGIN_NAME, #T , T);
 
-PlaceholderAPI::PlaceholderAPI(string Name, int UpdateInterval, bool AutoUpdate, bool ProcessParameters,std::function<string(class Player*)> callback) {
+PlaceholderAPI::PlaceholderAPI(string Name, int UpdateInterval, bool AutoUpdate, bool ProcessParameters,string PluginName,std::function<string(class Player*)> callback) {
 	for (auto& i : GlobalPAPI) {
 		if (i.second.mName == Name) {
 			logger.warn("Placeholder {} tried to register which is already used", i.second.mName);
@@ -35,33 +36,33 @@ void PlaceholderAPI::registerPlaceholder(PlaceholderAPI a1) {
 	}
 }
 
-void PlaceholderAPI::registerStaticPlaceholder(string name, string(*Func)())
+void PlaceholderAPI::registerStaticPlaceholder(string name, string(*Func)(), string PluginName)
 {
-	PlaceholderAPI a1(name, -1, false, false, [Func](Player* sp) {
+	PlaceholderAPI a1(name, -1, false, false,"", [Func](Player* sp) {
 		return Func();
 		});
 	registerPlaceholder(a1);
 }
 
-void PlaceholderAPI::registerStaticPlaceholder(string name, string value)
+void PlaceholderAPI::registerStaticPlaceholder(string name, string value, string PluginName)
 {
-	PlaceholderAPI a1(name, -1, false, false, [value](Player* sp) {
+	PlaceholderAPI a1(name, -1, false, false, "", [value](Player* sp) {
 		return value;
 		});
 	registerPlaceholder(a1);
 }
 
-void PlaceholderAPI::registerStaticPlaceholder(string name, int UpdateInterval, string(*Func)())
+void PlaceholderAPI::registerStaticPlaceholder(string name, int UpdateInterval, string(*Func)(), string PluginName)
 {
-	PlaceholderAPI a1(name, UpdateInterval, true, false, [Func](Player* sp) {
+	PlaceholderAPI a1(name, UpdateInterval, true, false, "", [Func](Player* sp) {
 		return Func();
 		});
 	registerPlaceholder(a1);
 }
 
 
-void  PlaceholderAPI::registerPlayerPlaceholder(string name, std::function<string(class Player*)> callback) {
-	PlaceholderAPI a1(name, -1, false, true, callback);
+void  PlaceholderAPI::registerPlayerPlaceholder(string name, std::function<string(class Player*)> callback,string PluginName) {
+	PlaceholderAPI a1(name, -1, false, true, PluginName, callback);
 	registerPlaceholder(a1);
 }
 
@@ -119,6 +120,21 @@ void PlaceholderAPI::translateString(string& a0,Player* sp) {
 	}
 	
 }
+std::unordered_set<string> PlaceholderAPI::getPAPIList() {
+	std::unordered_set<string> list;
+	for (auto& i : GlobalPAPI) {
+		list.insert(i.second.getPluginName());
+	}
+	return list;
+}
+
+std::vector<PlaceholderAPI> PlaceholderAPI::getPAPIInfoList() {
+	std::vector<PlaceholderAPI> list;
+	for (auto& i : GlobalPAPI) {
+		list.push_back(i.second);
+	}
+	return list;
+}
 
 void updatePlaceholder() {
 	Schedule::repeat([] {
@@ -134,6 +150,7 @@ void updatePlaceholder() {
 void init() {
 	updatePlaceholder();
 }
+#include <RemoteCallAPI.h>
 
 string gettime()
 {
@@ -145,10 +162,31 @@ string gettime()
 	strftime(timestr, 20, "%Y-%m-%d %H:%M:%S", LocTime);
 	return string(timestr);
 }
+	std::string GetValue(std::string const& from)
+	{
+		return	PlaceholderAPI::getValue(from);
+	}
+	std::string GetValueWithPlayer(std::string const& a1, std::string const& a2)
+	{
+		return	PlaceholderAPI::getValue(a1, Level::getPlayer(a2));
+	}
+
+	std::string registerInit(std::string const& PluginName ,std::string const& FuncName, std::string const& PAPIName)
+	{
+		
+		auto Call = RemoteCall::importAs<string(std::string const& arg)>(PluginName, FuncName);
+		
+		PlaceholderAPI::registerPlayerPlaceholder(PAPIName, [Call](Player* sp) {
+			return Call(sp->getXuid());
+			}, PluginName);
+		return "success";
+	}
+
+
 
 void debug() {
 	init();
-	PlaceholderAPI::registerStaticPlaceholder("Time",100,gettime);
+	PlaceholderAPI::registerStaticPlaceholder("Time",gettime);
 	
 	PlaceholderAPI::registerPlayerPlaceholder("PlayerRealName", [](Player* sp) {
 		return sp->getRealName();
@@ -160,4 +198,9 @@ void debug() {
 		ev.mMessage = str;
 		return true;
 		});
+
+	EXPORTAPI(registerInit);
+	EXPORTAPI(GetValue);
+	EXPORTAPI(GetValueWithPlayer);
+	
 }
