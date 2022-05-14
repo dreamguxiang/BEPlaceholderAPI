@@ -14,11 +14,12 @@ inline void CheckProtocolVersion() {
     }
 #endif // TARGET_BDS_PROTOCOL_VERSION
 }
-void debug();
+
+void PAPIinit();
 void RegCommand();
 void PluginInit()
 {
-    debug();
+    PAPIinit();
     RegCommand();
     CheckProtocolVersion();
 }

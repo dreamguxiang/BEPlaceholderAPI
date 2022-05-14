@@ -82,6 +82,7 @@ copy /Y "$(TargetPath)" "$(LocalDebuggerWorkingDirectory)\plugins\"
   <ItemGroup>
     <ClInclude Include="framework.h" />
     <ClInclude Include="Global.h" />
+    <ClInclude Include="Helper.h" />
     <ClInclude Include="PlaceholderAPI.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Version.h" />

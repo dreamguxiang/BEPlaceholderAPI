@@ -7,7 +7,7 @@ public:
 	string mValue;
 	string mName;
 private:
-	string mPluginName = REG_PLUGIN_NAME;
+	string mPluginName;
 	int mUpdateInterval;
 	bool mAutoUpdate;
 	bool mProcessParameters;

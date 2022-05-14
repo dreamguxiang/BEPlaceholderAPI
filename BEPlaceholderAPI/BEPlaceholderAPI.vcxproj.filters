@@ -30,6 +30,9 @@
     <ClInclude Include="PlaceholderAPI.h">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="Helper.h">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">

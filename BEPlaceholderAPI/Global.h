@@ -13,5 +13,6 @@
 #include <MC/ItemStack.hpp>
 #include "Version.h"
 #include <LLAPI.h>
-
+#include <Utils/StringHelper.h>
+#include <RemoteCallAPI.h>
 extern Logger logger;

@@ -33,7 +33,7 @@ void RegCommand()
             {
                 str += std::to_string(i++) +".§a" + papi + "§r\n";
             }
-            output.addMessage(str);
+            output.success(str);
             break;
         }
         case do_hash("info"): {
@@ -46,7 +46,7 @@ void RegCommand()
                     str += std::to_string(i++) + ".§a" + papi.mName + "§r\n";
                 }
             }
-            output.addMessage(str);
+            output.success(str);
             break;
         }
         default:
