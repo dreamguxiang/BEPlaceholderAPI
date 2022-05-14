@@ -1,15 +1,15 @@
-name: Build Plugin(Publish if tag)
+name: Build BEPlaceholderAPI
 
-on: [ workflow_dispatch ]
+on: [ push ]
 
 env:
-  PLUGIN_NAME: Template
-  SOLUTION_FILE_PATH: ./Template.sln
-  VERSION_FILE_PATH: Template/Version.h
+  PLUGIN_NAME: BEPlaceholderAPI
+  SOLUTION_FILE_PATH: ./BEPlaceholderAPI.sln
+  VERSION_FILE_PATH: BEPlaceholderAPI/Version.h
   BUILD_CONFIGURATION: Release
   Platform: X64
   SDK_DIR: ./SDK
-  BDS_VERSION: 1.18.31.04
+  BDS_VERSION: 1.18.33.02
 
 jobs:
   build:
