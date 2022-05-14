@@ -18,24 +18,27 @@
     <ClInclude Include="framework.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="pch.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="Version.h">
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Resourse</Filter>
     </ClInclude>
+    <ClInclude Include="Global.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="PlaceholderAPI.h">
+      <Filter>Source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="pch.cpp">
+    <ClCompile Include="Plugin.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Plugin.cpp">
+    <ClCompile Include="PlaceholderAPI.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
