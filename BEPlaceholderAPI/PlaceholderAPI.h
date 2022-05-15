@@ -10,12 +10,14 @@ private:
 	string mPluginName;
 	int mUpdateInterval;
 	bool mAutoUpdate;
+	bool mProcessPlayer;
 	bool mProcessParameters;
 	std::function<string(class Player*)>  mCallback;
+	std::function<string(class Player*,std::map<string,string>)>  mCallbackWithParameters;
 	
 public:
 	PlaceholderAPI() {};
-	PlaceholderAPI(string Name,int UpdateInterval,bool AutoUpdate,bool ProcessParameters, string PluginName,std::function<string(class Player*)> callback);
+	PlaceholderAPI(string Name,int UpdateInterval,bool AutoUpdate,bool mProcessPlayer, bool mProcessParameters ,string PluginName,std::function<string(class Player*)> callback, std::function<string(class Player*, std::map<string, string>)> CallbackWithParameters);
 	~PlaceholderAPI() { };
 	
 	static void registerPlaceholder(PlaceholderAPI a0);
@@ -26,8 +28,13 @@ public:
 	static void registerStaticPlaceholder(string name, string(*Func)(), string PluginName = "");
 	static void registerStaticPlaceholder(string name, string value, string PluginName = "");
 	static void registerStaticPlaceholder(string name, int UpdateInterval , string(*Func)(), string PluginName = "");
+	
 	static void registerPlayerPlaceholder(string name, std::function<string(class Player*)> callback, string PluginName = "");
+	static void registerPlayerPlaceholder(string name, std::function<string(class Player*, std::map<string, string>)> callback, string PluginName = "");
+
 	static void registerServerPlaceholder(string name, std::function<string()> callback, string PluginName = "");
+	static void registerServerPlaceholder(string name, std::function<string(std::map<string, string>)> callback, string PluginName = "");
+	
 	static void Update(PlaceholderAPI a1);
 	static std::unordered_set<string> getPAPIList();
 	static std::vector<PlaceholderAPI> getPAPIInfoList();

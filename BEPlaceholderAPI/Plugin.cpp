@@ -14,7 +14,6 @@ inline void CheckProtocolVersion() {
     }
 #endif // TARGET_BDS_PROTOCOL_VERSION
 }
-void regPlayerInit();
 void PAPIinit();
 void RegCommand();
 void PluginInit()
@@ -22,5 +21,4 @@ void PluginInit()
     PAPIinit();
     RegCommand();
     CheckProtocolVersion();
-    regPlayerInit();
 }

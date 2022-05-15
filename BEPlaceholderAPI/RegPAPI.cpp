@@ -132,13 +132,17 @@ void regPlayerInit() {
 }
 
 void regServerInit() {
-	PlaceholderAPI::registerServerPlaceholder("server_time_<format>", []() {
-		
-		return "";
+
+	PlaceholderAPI::registerServerPlaceholder("server_time_<format>", [](std::map<string, string> map) {	
+		if(map.find("<format>") != map.end()) {
+			return Helper::getTime(map["<format>"]);
+		}
+		return Helper::getTime("%H:%M:%S");
 		});
 	PlaceholderAPI::registerServerPlaceholder("server_online", []() {
 		return S(Helper::getActiveAndInProgressPlayerCount(mce::UUID::EMPTY));
 		});
+	
 	PlaceholderAPI::registerServerPlaceholder("server_max_players", []() {
 		return  S(*((int*)Global<ServerNetworkHandler> + 188));
 		});
