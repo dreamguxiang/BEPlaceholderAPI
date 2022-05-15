@@ -47,6 +47,12 @@
     <ClCompile Include="Command.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="RegPAPI.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="SymDBHelper.c">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource.rc">
