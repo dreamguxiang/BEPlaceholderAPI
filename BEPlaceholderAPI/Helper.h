@@ -2,14 +2,14 @@
 #include "Global.h"
 
 namespace Helper {
-	inline string gettime()
+	inline string gettime(string format)
 	{
 		time_t rawtime;
 		tm* LocTime;
 		char timestr[20];
 		time(&rawtime);
 		LocTime = localtime(&rawtime);
-		strftime(timestr, 20, "%Y-%m-%d %H:%M:%S", LocTime);
+		strftime(timestr, 20, format.c_str(), LocTime);
 		return string(timestr);
 	}
 	inline string checkPAPIName(string x) {
@@ -24,5 +24,14 @@ namespace Helper {
 				break;
 		}
 		return str;
+	}
+	inline class LevelData& getLevelData() {
+		class LevelData& (Level:: * rv)();
+		*((void**)&rv) = dlsym("?getLevelData@Level@@UEAAAEAVLevelData@@XZ");
+		return (Global<Level>->*rv)();
+	}
+
+	inline int getActiveAndInProgressPlayerCount(class mce::UUID a1) {
+		return SymCall("?_getActiveAndInProgressPlayerCount@ServerNetworkHandler@@AEBAHVUUID@mce@@@Z", int, ServerNetworkHandler*, mce::UUID)(Global<ServerNetworkHandler>, a1);
 	}
 }

@@ -27,6 +27,7 @@ public:
 	static void registerStaticPlaceholder(string name, string value, string PluginName = "");
 	static void registerStaticPlaceholder(string name, int UpdateInterval , string(*Func)(), string PluginName = "");
 	static void registerPlayerPlaceholder(string name, std::function<string(class Player*)> callback, string PluginName = "");
+	static void registerServerPlaceholder(string name, std::function<string()> callback, string PluginName = "");
 	static void Update(PlaceholderAPI a1);
 	static std::unordered_set<string> getPAPIList();
 	static std::vector<PlaceholderAPI> getPAPIInfoList();

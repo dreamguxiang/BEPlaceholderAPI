@@ -66,6 +66,13 @@ void PlaceholderAPI::registerStaticPlaceholder(string name, int UpdateInterval, 
 	registerPlaceholder(a1);
 }
 
+void PlaceholderAPI::registerServerPlaceholder(string name, std::function<string()> callback, string PluginName) {
+	PlaceholderAPI a1(name, -1, false, false, "", [callback](Player* sp) {
+		return callback();
+		});
+	registerPlaceholder(a1);
+}
+
 
 void  PlaceholderAPI::registerPlayerPlaceholder(string name, std::function<string(class Player*)> callback,string PluginName) {
 	PlaceholderAPI a1(name, -1, false, true, PluginName, callback);
@@ -98,6 +105,7 @@ string PlaceholderAPI::getValue(string a1,Player* sp) {
 
 string PlaceholderAPI::getValue(string a1) {
 	a1 = Helper::checkPAPIName(a1);
+	
 	if (GlobalPAPI.find(a1) != GlobalPAPI.end()) {
 		auto& papi = GlobalPAPI.at(a1);
 		if (!papi.mProcessParameters) {
@@ -179,11 +187,6 @@ void debug() {
 
 
 void PAPIinit() {
-	
-	PlaceholderAPI::registerStaticPlaceholder("Time", Helper::gettime);
-	PlaceholderAPI::registerPlayerPlaceholder("PlayerRealName", [](Player* sp) {
-		return sp->getRealName();
-		});
 	
 	updatePlaceholder();
 	EXPORTAPI(RemoteCall::registerInit);

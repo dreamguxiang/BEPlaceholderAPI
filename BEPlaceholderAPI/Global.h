@@ -15,4 +15,7 @@
 #include <LLAPI.h>
 #include <Utils/StringHelper.h>
 #include <RemoteCallAPI.h>
+#include <ServerAPI.h>
+#include <MC/LevelData.hpp>
 extern Logger logger;
+#define S(x) std::to_string(x)
