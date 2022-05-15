@@ -1,6 +1,11 @@
 #pragma once
 #include "Global.h"
 #include <regex>
+#include <windows.h>
+#include <Pdh.h>
+#include <PdhMsg.h>
+#include <psapi.h>
+#pragma comment(lib,"psapi.lib")
 
 namespace Helper {
 	inline string getTime(string format)
@@ -87,4 +92,24 @@ namespace Helper {
 		else
 			return std::make_tuple(true, map);
 	}
+
+	inline std::unordered_map<string, string> getRam() {
+		MEMORYSTATUSEX statusex;
+		statusex.dwLength = sizeof(statusex);
+		GlobalMemoryStatusEx(&statusex);
+
+		HANDLE handle = GetCurrentProcess();
+		PROCESS_MEMORY_COUNTERS pmc;
+		GetProcessMemoryInfo(handle, &pmc, sizeof(pmc));
+		std::unordered_map<string, string> ram;
+		ram.emplace("all", std::to_string(statusex.ullTotalPhys / 1024 / 1024));
+		ram.emplace("canuse", std::to_string(statusex.ullAvailPhys / 1024 / 1024));
+		ram.emplace("percent", std::to_string(statusex.dwMemoryLoad));
+		ram.emplace("used", std::to_string((statusex.ullTotalPhys - statusex.ullAvailPhys) / 1024 / 1024));
+		
+		ram.emplace("bdsused", std::to_string(pmc.WorkingSetSize / 1024 / 1024));
+
+		return ram;
+	}
+
 }

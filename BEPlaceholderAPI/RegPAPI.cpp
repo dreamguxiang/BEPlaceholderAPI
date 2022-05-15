@@ -10,9 +10,7 @@
 #include <ctime>
 #include <EventAPI.h>
 #include <MC/LevelChunk.hpp>
-#include <windows.h>
-#include <Pdh.h>
-#include <PdhMsg.h>
+
 
 std::time_t startTime = 0;
 
@@ -193,6 +191,25 @@ void regServerInit() {
 		return "";
 		});
 	
+	PlaceholderAPI::registerServerPlaceholder("server_ram_bds_used", []() {
+		auto ram = Helper::getRam();
+		return ram["bdsused"];
+		});
+	
+	PlaceholderAPI::registerServerPlaceholder("server_ram_free", []() {
+		auto ram = Helper::getRam();
+		return ram["canuse"];
+		});
+	
+	PlaceholderAPI::registerServerPlaceholder("server_ram_used", []() {
+		auto ram = Helper::getRam();
+		return ram["used"];
+		});
+	
+	PlaceholderAPI::registerServerPlaceholder("server_ram_max", []() {
+		auto ram = Helper::getRam();
+		return ram["all"];
+		});
 }
 
 void ListenEvent() {
@@ -210,17 +227,6 @@ string ramUse_ = m_replace(ramAll_, "{ramUse}", ram["used"]);
 string ramPercent_ = m_replace(ramUse_, "{ranPercent}", ram["percent"]);
 string ramCan_ = m_replace(ramPercent_, "{ramCan}", ram["canuse"]);
 */
-std::unordered_map<string, string> getRam() {
-	MEMORYSTATUSEX statusex;
-	statusex.dwLength = sizeof(statusex);
-	GlobalMemoryStatusEx(&statusex);
-	std::unordered_map<string, string> ram;
-	ram.emplace("all", std::to_string(statusex.ullTotalPhys / 1024 / 1024));
-	ram.emplace("canuse", std::to_string(statusex.ullAvailPhys / 1024 / 1024));
-	ram.emplace("percent", std::to_string(statusex.dwMemoryLoad));
-	ram.emplace("used", std::to_string((statusex.ullTotalPhys - statusex.ullAvailPhys) / 1024 / 1024));
-	return ram;
-}
 
 /*
 *%server_ram_used% 服务器内存使用
