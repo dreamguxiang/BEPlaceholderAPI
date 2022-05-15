@@ -10,6 +10,9 @@
 #include <ctime>
 #include <EventAPI.h>
 #include <MC/LevelChunk.hpp>
+#include <windows.h>
+#include <Pdh.h>
+#include <PdhMsg.h>
 
 std::time_t startTime = 0;
 
@@ -199,14 +202,31 @@ void ListenEvent() {
 		});
 }
 
+/*
+//系统
+string cpu_ = m_replace(cmd, "{cpu}", getCPUUsed());
+string ramAll_ = m_replace(cpu_, "{ramAll}", ram["all"]);
+string ramUse_ = m_replace(ramAll_, "{ramUse}", ram["used"]);
+string ramPercent_ = m_replace(ramUse_, "{ranPercent}", ram["percent"]);
+string ramCan_ = m_replace(ramPercent_, "{ramCan}", ram["canuse"]);
+*/
+std::unordered_map<string, string> getRam() {
+	MEMORYSTATUSEX statusex;
+	statusex.dwLength = sizeof(statusex);
+	GlobalMemoryStatusEx(&statusex);
+	std::unordered_map<string, string> ram;
+	ram.emplace("all", std::to_string(statusex.ullTotalPhys / 1024 / 1024));
+	ram.emplace("canuse", std::to_string(statusex.ullAvailPhys / 1024 / 1024));
+	ram.emplace("percent", std::to_string(statusex.dwMemoryLoad));
+	ram.emplace("used", std::to_string((statusex.ullTotalPhys - statusex.ullAvailPhys) / 1024 / 1024));
+	return ram;
+}
 
 /*
-*%server_uptime% 服务器运行时间
-%server_ram_used% 服务器内存使用
-%server_ram_free% 服务器内存空闲
-%server_ram_total% 服务器内存总计
-%server_ram_max% 服务器最大内存
-*%server_name% 服务器名
+*%server_ram_used% 服务器内存使用
+*%server_ram_free% 服务器内存空闲
+*%server_ram_total% 服务器内存总计
+*%server_ram_max% 服务器最大内存
 %server_tps% 服务器TPS
 %server_tps_1% 服务器当前TPS
 %server_tps_5% 服务器 5 分钟前TPS
@@ -215,8 +235,6 @@ void ListenEvent() {
 %server_tps_5_colored%
 %server_tps_15_colored%
 %server_online_<world>%
-*%server_has_whitelist% 服务器是否启用了白名单
 %server_total_chunks% 服务器总区块数
 %server_total_living_entities% 服务器总活跃实体
-*%server_total_entities% 服务器总实体数
 */
