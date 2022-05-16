@@ -210,6 +210,9 @@ void regServerInit() {
 		auto ram = Helper::getRam();
 		return ram["all"];
 		});
+	PlaceholderAPI::registerServerPlaceholder("server_tps", []() {
+		return "20";
+		});
 }
 
 void ListenEvent() {
@@ -229,10 +232,6 @@ string ramCan_ = m_replace(ramPercent_, "{ramCan}", ram["canuse"]);
 */
 
 /*
-*%server_ram_used% 服务器内存使用
-*%server_ram_free% 服务器内存空闲
-*%server_ram_total% 服务器内存总计
-*%server_ram_max% 服务器最大内存
 %server_tps% 服务器TPS
 %server_tps_1% 服务器当前TPS
 %server_tps_5% 服务器 5 分钟前TPS
