@@ -9,9 +9,20 @@
 #include <MC/Attribute.hpp>
 #include <ctime>
 #include <EventAPI.h>
+#include <I18nAPI.h>
 #include <MC/LevelChunk.hpp>
 
-
+namespace TPS {
+	bool isMSPTing = false;
+	double mspt = 0;
+	int tps = 0;
+}
+namespace chunk {
+	bool inProfiling = false;
+	std::map<ChunkPos2, int64_t> map;
+	int chunknum = 0;
+	
+}
 std::time_t startTime = 0;
 
 void regPlayerInit() {
@@ -211,7 +222,13 @@ void regServerInit() {
 		return ram["all"];
 		});
 	PlaceholderAPI::registerServerPlaceholder("server_tps", []() {
-		return "20";
+		return S(TPS::tps);
+		});
+	PlaceholderAPI::registerServerPlaceholder("server_mspt", []() {
+		return S(TPS::mspt);
+		});
+	PlaceholderAPI::registerServerPlaceholder("server_total_chunks", []() {
+		return S(chunk::chunknum);
 		});
 }
 
@@ -222,6 +239,54 @@ void ListenEvent() {
 		});
 }
 
+typedef std::chrono::high_resolution_clock timer_clock;
+THook(void, "?tick@ServerLevel@@UEAAXXZ", Level* a1) {
+	TIMER_START
+	original(a1);
+	TIMER_END
+		if (TPS::isMSPTing) {
+			TPS::mspt = (double)timeReslut / 1000;
+			TPS::tps = TPS::mspt <= 50 ? 20 : (int)(1000.0 / TPS::mspt);
+			TPS::isMSPTing = false;
+		}
+}
+
+THook(void, "?tick@LevelChunk@@QEAAXAEAVBlockSource@@AEBUTick@@@Z", LevelChunk* levelChunk, BlockSource* blockSource, const struct Tick* a3) {
+	if (chunk::inProfiling) {
+		auto p = SymCall("?getPosition@LevelChunk@@QEBAAEBVChunkPos@@XZ", ChunkPos2, LevelChunk*)(levelChunk);
+		TIMER_START
+			original(levelChunk, blockSource, a3);
+		TIMER_END
+			chunk::map[p] += timeReslut;
+	}
+	else {
+		original(levelChunk, blockSource, a3);
+	}
+}
+#include <ScheduleAPI.h>
+
+void checkChunk() {	
+	chunk::inProfiling = true;
+	Schedule::delay([] {
+		chunk::chunknum = (int)chunk::map.size();
+		chunk::inProfiling = false;
+		std::cout << chunk::chunknum << std::endl;
+		//chunk::map.clear();
+		}, 40);
+}
+
+void RegPAPInit() {
+	Schedule::repeat([] {
+		TPS::isMSPTing = true;		
+		},20);
+	
+	Schedule::repeat([] {
+		checkChunk();
+		}, 50);
+	
+	regPlayerInit();
+	regServerInit();
+}
 /*
 //系统
 string cpu_ = m_replace(cmd, "{cpu}", getCPUUsed());

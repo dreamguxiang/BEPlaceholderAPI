@@ -218,8 +218,7 @@ void debug() {
 
 }
 
-void regPlayerInit();
-void regServerInit();
+void  RegPAPInit();
 
 void PAPIinit() {
 	
@@ -228,6 +227,5 @@ void PAPIinit() {
 	EXPORTAPI(RemoteCall::GetValue);
 	EXPORTAPI(RemoteCall::GetValueWithPlayer);
 	debug();
-	regPlayerInit();
-	regServerInit();
+	RegPAPInit();
 }

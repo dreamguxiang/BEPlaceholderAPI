@@ -6,6 +6,26 @@
 #include <PdhMsg.h>
 #include <psapi.h>
 #pragma comment(lib,"psapi.lib")
+typedef std::chrono::high_resolution_clock timer_clock;
+#define TIMER_START auto start = timer_clock::now();
+#define TIMER_END                                                      \
+    auto elapsed = timer_clock::now() - start;                         \
+    long long timeReslut =                                             \
+        std::chrono::duration_cast<std::chrono::microseconds>(elapsed) \
+            .count();
+
+class ChunkPos2 {
+	int       x, z;
+public:
+	class ChunkPos2& operator=(class ChunkPos2 const&) = default;
+	ChunkPos2(class ChunkPos2 const&) = default;
+	ChunkPos2() = default;
+	bool operator<(const ChunkPos2& rhs) const {
+		if (x < rhs.x) return true;
+		if (rhs.x < x) return false;
+		return z < rhs.z;
+	}
+};
 
 namespace Helper {
 	inline string getTime(string format)
@@ -111,5 +131,4 @@ namespace Helper {
 
 		return ram;
 	}
-
 }
