@@ -39,8 +39,8 @@ namespace Helper {
 		return string(timestr);
 	}
 	inline string checkPAPIName(string x) {
-		if (x.find('{') != x.npos && x.find('}') != x.npos) return x;
-		else return "{" + x + "}";
+		if (x.find('%') != x.npos && x.find('%') != x.npos) return x;
+		else return '%' + x + '%';
 	}
 	inline string ReplaceStr(string str, const string& old_value, const string& new_value) {
 		for (string::size_type pos(0); pos != string::npos; pos += new_value.length()) {
@@ -81,15 +81,36 @@ namespace Helper {
 	}
 
 	inline string removeBrackets(string a1) {
-		a1.erase(std::remove(a1.begin(), a1.end(), '}'), a1.end());
-		a1.erase(std::remove(a1.begin(), a1.end(), '{'), a1.end());
+		a1.erase(std::remove(a1.begin(), a1.end(), '%'), a1.end());
+		a1.erase(std::remove(a1.begin(), a1.end(), '%'), a1.end());
 		return a1;
 	}
 	
 	inline bool isParameters(std::string str) {
-		std::regex reg("[<]([^]+)[>]");
+		std::regex reg("[<]([^>]+)[>]");
 		return std::regex_match(removeBrackets(str), reg);
 
+	}
+	inline vector<string> getBackets(std::string str) {
+		std::regex reg("[{]([^}]+)[}]");
+		vector<string> result;
+		for (std::sregex_iterator i = std::sregex_iterator(str.begin(), str.end(), reg); i != std::sregex_iterator(); ++i) {
+			result.push_back((*i).str());
+		}
+		return result;
+	}
+
+	inline vector<string> getPercentage(std::string str) {
+		std::regex reg("[%]([^%]+)[%]");
+		vector<string> result;
+		for (std::sregex_iterator i = std::sregex_iterator(str.begin(), str.end(), reg); i != std::sregex_iterator(); ++i) {
+			result.push_back((*i).str());
+		}
+		return result;
+	}
+
+	inline void Backets2Percentage(string& str) {
+		ReplaceStr(str, "{", "%"); ReplaceStr(str, "}", "%");
 	}
 
 	inline std::tuple<bool, std::map<string, string>> FindPlaceholder(std::string str, std::string str2) {

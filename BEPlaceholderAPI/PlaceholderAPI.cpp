@@ -6,6 +6,7 @@ std::unordered_map<string, PlaceholderAPI>  GlobalPAPI;
 std::unordered_map<string, PlaceholderAPI>  updatePlaceholders;
 #define EXPORTAPI(T) RemoteCall::exportAs(PLUGIN_NAME, Helper::ReplaceStr(#T,"RemoteCall::","") , T);
 
+
 PlaceholderAPI::PlaceholderAPI(string Name, int UpdateInterval, bool AutoUpdate, bool ProcessPlayer,bool ProcessParameters,string PluginName,std::function<string(class Player*)> callback, std::function<string(class Player*, std::map<string, string>)> CallbackWithParameters) {
 	for (auto& i : GlobalPAPI) {
 		if (i.second.mName == Name) {
@@ -14,7 +15,7 @@ PlaceholderAPI::PlaceholderAPI(string Name, int UpdateInterval, bool AutoUpdate,
 		}
 	}
 	
-	mName = "{"+Name+"}";
+	mName = '%' +Name+ '%';
 	mUpdateInterval = UpdateInterval;
 	mAutoUpdate = AutoUpdate;
 	mProcessParameters = ProcessParameters;
@@ -103,15 +104,17 @@ string PlaceholderAPI::getValue(string a1,Player* sp) {
 	a1 = Helper::checkPAPIName(a1);
 	if (GlobalPAPI.find(a1) != GlobalPAPI.end()) {
 		auto& papi = GlobalPAPI.at(a1);
-		if (papi.mProcessPlayer) {
-			return GlobalPAPI.at(a1).mCallback(sp);
-		}
-		else {
-			if (papi.mAutoUpdate) {
-				return papi.mValue;
+		if (!papi.mProcessParameters) {
+			if (papi.mProcessPlayer) {
+				return GlobalPAPI.at(a1).mCallback(sp);
 			}
 			else {
-				return papi.mCallback(nullptr);
+				if (papi.mAutoUpdate) {
+					return papi.mValue;
+				}
+				else {
+					return papi.mCallback(nullptr);
+				}
 			}
 		}
 	}
@@ -125,24 +128,26 @@ string PlaceholderAPI::getValue(string a1,Player* sp) {
 			}
 		}
 	}
-	return "NULL";
+	return a1;
 }
 
 string PlaceholderAPI::getValue(string a1) {
 	a1 = Helper::checkPAPIName(a1);	
 	if (GlobalPAPI.find(a1) != GlobalPAPI.end()) {
 		auto& papi = GlobalPAPI.at(a1);
-		if (!papi.mProcessPlayer) {
-			if (papi.mAutoUpdate) {
-				return papi.mValue;
+		if (!papi.mProcessParameters) {
+			if (!papi.mProcessPlayer) {
+				if (papi.mAutoUpdate) {
+					return papi.mValue;
+				}
+				else {
+					return papi.mCallback(nullptr);
+				}
 			}
-			else {
-				return papi.mCallback(nullptr);
-			}
-		}
 		else
 			return "Unknown Player";
-	}	
+		}
+	}
 	else {
 		for (auto& i : GlobalPAPI) {
 			if (i.second.mProcessParameters) {
@@ -153,14 +158,16 @@ string PlaceholderAPI::getValue(string a1) {
 			}
 		}
 	}
-	return "NULL";
+	return a1;
 }
 
 void PlaceholderAPI::translateString(string& a0,Player* sp) {
-	for (auto& i : GlobalPAPI) {
-		ReplaceStr(a0, i.first, getValue(i.first, sp));
+	auto list = Helper::getPercentage(a0);
+	for (auto& i : list) {
+		ReplaceStr(a0, i, getValue(i, sp));
 	}
 }
+
 std::unordered_set<string> PlaceholderAPI::getPAPIList() {
 	std::unordered_set<string> list;
 	for (auto& i : GlobalPAPI) {
@@ -211,6 +218,7 @@ void debug() {
 
 	Event::PlayerChatEvent::subscribe_ref([](Event::PlayerChatEvent& ev) {
 		auto& str = ev.mMessage;
+		Helper::Backets2Percentage(str);
 		PlaceholderAPI::translateString(str, ev.mPlayer);
 		ev.mMessage = str;
 		return true;
