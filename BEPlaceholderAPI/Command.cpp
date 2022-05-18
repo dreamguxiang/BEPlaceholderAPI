@@ -31,7 +31,7 @@ void RegCommand()
 			int i = 0;
             for (auto& papi : PAPIList) 
             {
-                str += std::to_string(i++) +".§a" + papi + "§r\n";
+                str += std::to_string(++i) +".§a" + papi + "§r\n";
             }
             output.success(str);
             break;
@@ -43,7 +43,7 @@ void RegCommand()
             int i = 0;
             for (auto& papi : list) {
                 if (papi.getPluginName() == PAPIName) {
-                    str += std::to_string(i++) + ".§a" + papi.mName + "§r\n";
+                    str += std::to_string(++i) + ".§a" + papi.mName + "§r\n";
                 }
             }
             output.success(str);

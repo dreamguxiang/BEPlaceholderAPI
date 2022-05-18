@@ -214,16 +214,18 @@ namespace RemoteCall {
 	}
 }
 
-void debug() {
+void EventInit() {
 
-	Event::PlayerChatEvent::subscribe_ref([](Event::PlayerChatEvent& ev) {
-		auto& str = ev.mMessage;
-		Helper::Backets2Percentage(str);
-		PlaceholderAPI::translateString(str, ev.mPlayer);
-		ev.mMessage = str;
-		return true;
-		});
-
+	if (Settings::Chat::Enabled) {
+		Event::PlayerChatEvent::subscribe_ref([](Event::PlayerChatEvent& ev) {
+			auto& str = ev.mMessage;
+			if (Settings::Chat::CanUseBrackets) 
+				Helper::Backets2Percentage(str);			
+			PlaceholderAPI::translateString(str, ev.mPlayer);
+			ev.mMessage = str;
+			return true;
+			});
+	}
 }
 
 void  RegPAPInit();
@@ -234,6 +236,6 @@ void PAPIinit() {
 	EXPORTAPI(RemoteCall::registerInit);
 	EXPORTAPI(RemoteCall::GetValue);
 	EXPORTAPI(RemoteCall::GetValueWithPlayer);
-	debug();
+	EventInit();
 	RegPAPInit();
 }

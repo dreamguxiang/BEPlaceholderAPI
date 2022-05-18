@@ -85,6 +85,7 @@ copy /Y "$(TargetPath)" "$(LocalDebuggerWorkingDirectory)\plugins\"
     <ClInclude Include="Helper.h" />
     <ClInclude Include="PlaceholderAPI.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Setting.h" />
     <ClInclude Include="Version.h" />
   </ItemGroup>
   <ItemGroup>
@@ -95,6 +96,7 @@ copy /Y "$(TargetPath)" "$(LocalDebuggerWorkingDirectory)\plugins\"
     </ClCompile>
     <ClCompile Include="Plugin.cpp" />
     <ClCompile Include="RegPAPI.cpp" />
+    <ClCompile Include="Setting.cpp" />
     <ClCompile Include="SymDBHelper.c" />
   </ItemGroup>
   <ItemGroup>

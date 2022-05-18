@@ -33,6 +33,9 @@
     <ClInclude Include="Helper.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="Setting.h">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -50,8 +53,11 @@
     <ClCompile Include="RegPAPI.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="SymDBHelper.c">
+    <ClCompile Include="Setting.cpp">
       <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="SymDBHelper.c">
+      <Filter>Resourse</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

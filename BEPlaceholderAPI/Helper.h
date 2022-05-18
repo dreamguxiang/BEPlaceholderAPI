@@ -91,7 +91,7 @@ namespace Helper {
 		return std::regex_match(removeBrackets(str), reg);
 
 	}
-	inline vector<string> getBackets(std::string str) {
+	inline vector<string> getBrackets(std::string str) {
 		std::regex reg("[{]([^}]+)[}]");
 		vector<string> result;
 		for (std::sregex_iterator i = std::sregex_iterator(str.begin(), str.end(), reg); i != std::sregex_iterator(); ++i) {
