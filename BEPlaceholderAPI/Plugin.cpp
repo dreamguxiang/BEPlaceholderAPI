@@ -4,7 +4,6 @@
 Logger logger(PLUGIN_NAME);
 
 inline void CheckProtocolVersion() {
-#ifdef TARGET_BDS_PROTOCOL_VERSION
     auto currentProtocol = LL::getServerProtocolVersion();
     if (TARGET_BDS_PROTOCOL_VERSION != currentProtocol)
     {
@@ -12,12 +11,42 @@ inline void CheckProtocolVersion() {
             TARGET_BDS_PROTOCOL_VERSION, currentProtocol);
         logger.warn("This will most likely crash the server, please use the Plugin that matches the BDS version!");
     }
-#endif // TARGET_BDS_PROTOCOL_VERSION
 }
+
+
+void loadCfg() {
+    //config
+    if (!std::filesystem::exists("plugins/BEPlaceholderAPI"))
+        std::filesystem::create_directories("plugins/BEPlaceholderAPI");
+    //tr	
+    if (std::filesystem::exists(JsonFile)) {
+        try {
+            Settings::LoadConfigFromJson(JsonFile);
+        }
+        catch (std::exception& e) {
+            logger.error("Config File isInvalid, Err {}", e.what());
+            Sleep(1000 * 100);
+            exit(1);
+        }
+        catch (...) {
+            logger.error("Config File isInvalid");
+            Sleep(1000 * 100);
+            exit(1);
+        }
+    }
+    else {
+        logger.info("Config with default values created");
+        Settings::WriteDefaultConfig(JsonFile);
+    }
+}
+
+
 void PAPIinit();
 void RegCommand();
 void PluginInit()
 {
+    loadCfg();
+    CheckProtocolVersion();
     PAPIinit();
     RegCommand();
     CheckProtocolVersion();

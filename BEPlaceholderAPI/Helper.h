@@ -6,6 +6,26 @@
 #include <PdhMsg.h>
 #include <psapi.h>
 #pragma comment(lib,"psapi.lib")
+typedef std::chrono::high_resolution_clock timer_clock;
+#define TIMER_START auto start = timer_clock::now();
+#define TIMER_END                                                      \
+    auto elapsed = timer_clock::now() - start;                         \
+    long long timeReslut =                                             \
+        std::chrono::duration_cast<std::chrono::microseconds>(elapsed) \
+            .count();
+
+class ChunkPos2 {
+	int       x, z;
+public:
+	class ChunkPos2& operator=(class ChunkPos2 const&) = default;
+	ChunkPos2(class ChunkPos2 const&) = default;
+	ChunkPos2() = default;
+	bool operator<(const ChunkPos2& rhs) const {
+		if (x < rhs.x) return true;
+		if (rhs.x < x) return false;
+		return z < rhs.z;
+	}
+};
 
 namespace Helper {
 	inline string getTime(string format)
@@ -19,8 +39,10 @@ namespace Helper {
 		return string(timestr);
 	}
 	inline string checkPAPIName(string x) {
-		if (x.find('{') != x.npos && x.find('}') != x.npos) return x;
-		else return "{" + x + "}";
+		if (x.find('%') != x.npos && x.find('%') != x.npos) 
+			return x;
+		else 
+			return '%' + x + '%';
 	}
 	inline string ReplaceStr(string str, const string& old_value, const string& new_value) {
 		for (string::size_type pos(0); pos != string::npos; pos += new_value.length()) {
@@ -61,17 +83,37 @@ namespace Helper {
 	}
 
 	inline string removeBrackets(string a1) {
-		a1.erase(std::remove(a1.begin(), a1.end(), '}'), a1.end());
-		a1.erase(std::remove(a1.begin(), a1.end(), '{'), a1.end());
+		//a1.erase(std::remove(a1.begin(), a1.end(), '%'), a1.end());
+		a1.erase(a1.find_last_not_of("%") + 1);
 		return a1;
 	}
 	
 	inline bool isParameters(std::string str) {
-		std::regex reg("[<]([^]+)[>]");
+		std::regex reg("[<]([^>]+)[>]");
 		return std::regex_match(removeBrackets(str), reg);
 
 	}
+	inline vector<string> getBrackets(std::string str) {
+		std::regex reg("[{]([^}]+)[}]");
+		vector<string> result;
+		for (std::sregex_iterator i = std::sregex_iterator(str.begin(), str.end(), reg); i != std::sregex_iterator(); ++i) {
+			result.push_back((*i).str());
+		}
+		return result;
+	}
 
+	inline vector<string> getPercentage(std::string str) {
+		std::regex reg("[%]([^%]*)([^_]*)[%]");
+		vector<string> result;
+		for (std::sregex_iterator i = std::sregex_iterator(str.begin(), str.end(), reg); i != std::sregex_iterator(); ++i) {
+			result.push_back((*i).str());
+		}
+		return result;
+	}
+
+	inline void Backets2Percentage(string& str) {
+		ReplaceStr(str, "{", "%"); ReplaceStr(str, "}", "%");
+	}
 	inline std::tuple<bool, std::map<string, string>> FindPlaceholder(std::string str, std::string str2) {
 		std::map<string,string> map;
 		std::vector<std::string> ori = split(str, "_");
@@ -81,7 +123,7 @@ namespace Helper {
 			if (ori[i] != input[i]) {
 				if (isParameters(ori[i])) {
 					map.emplace(std::pair{ removeBrackets(ori[i]),removeBrackets(input[i])});
-					if (ori[i].find("}") != string::npos) {
+					if (ori[i].find("%") != string::npos) {
 						return std::make_tuple(true, map);
 					}
 				}
@@ -111,5 +153,4 @@ namespace Helper {
 
 		return ram;
 	}
-
 }

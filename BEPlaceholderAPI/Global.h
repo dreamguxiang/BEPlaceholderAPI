@@ -1,5 +1,6 @@
 #pragma once
 
+
 #include <iostream>
 #include <Global.h>
 #include <MC/Level.hpp>
@@ -17,5 +18,9 @@
 #include <RemoteCallAPI.h>
 #include <ServerAPI.h>
 #include <MC/LevelData.hpp>
+#include "Setting.h"
+
 extern Logger logger;
 #define S(x) std::to_string(x)
+#define JsonFile "plugins/BEPlaceholderAPI/config.json"
+#define VERSION LL::Version{PLUGIN_VERSION_MAJOR, PLUGIN_VERSION_MINOR, PLUGIN_VERSION_REVISION, PLUGIN_LLVERSION_STATUS}

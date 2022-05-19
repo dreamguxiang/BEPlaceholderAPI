@@ -9,8 +9,14 @@
 #include <MC/Attribute.hpp>
 #include <ctime>
 #include <EventAPI.h>
+#include <I18nAPI.h>
 #include <MC/LevelChunk.hpp>
 
+namespace TPS {
+	bool isMSPTing = false;
+	double mspt = 0;
+	int tps = 0;
+}
 
 std::time_t startTime = 0;
 
@@ -136,7 +142,8 @@ void regServerInit() {
 
 	PlaceholderAPI::registerServerPlaceholder("server_time_<format>", [](std::map<string, string> map) {	
 		if(map.find("<format>") != map.end()) {
-			return Helper::getTime(map["<format>"]);
+			if("<format>" != map["<format>"])
+				return Helper::getTime(map["<format>"]);
 		}
 		return Helper::getTime("%H:%M:%S");
 		});
@@ -211,7 +218,10 @@ void regServerInit() {
 		return ram["all"];
 		});
 	PlaceholderAPI::registerServerPlaceholder("server_tps", []() {
-		return "20";
+		return S(TPS::tps);
+		});
+	PlaceholderAPI::registerServerPlaceholder("server_mspt", []() {
+		return S(TPS::mspt);
 		});
 }
 
@@ -222,6 +232,33 @@ void ListenEvent() {
 		});
 }
 
+typedef std::chrono::high_resolution_clock timer_clock;
+THook(void, "?tick@ServerLevel@@UEAAXXZ", Level* a1) {
+	TIMER_START
+	original(a1);
+	TIMER_END
+		if (TPS::isMSPTing) {
+			TPS::mspt = (double)timeReslut / 1000;
+			TPS::tps = TPS::mspt <= 50 ? 20 : (int)(1000.0 / TPS::mspt);
+			TPS::isMSPTing = false;
+		}
+}
+#include <MC/SignBlockActor.hpp>
+THook(void*, "?_getUpdatePacket@SignBlockActor@@MEAA?AV?$unique_ptr@VBlockActorDataPacket@@U?$default_delete@VBlockActorDataPacket@@@std@@@std@@AEAVBlockSource@@@Z", SignBlockActor* a1,BlockSource* a2) {
+	std::cout << "update" << std::endl;
+	return original(a1, a2);
+}
+
+#include <ScheduleAPI.h>
+	
+
+void RegPAPInit() {
+	Schedule::repeat([] {
+		TPS::isMSPTing = true;		
+		},20);
+	regPlayerInit();
+	regServerInit();
+}
 /*
 //系统
 string cpu_ = m_replace(cmd, "{cpu}", getCPUUsed());
