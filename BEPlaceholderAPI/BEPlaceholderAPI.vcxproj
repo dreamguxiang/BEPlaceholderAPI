@@ -95,6 +95,7 @@ copy /Y "$(TargetPath)" "$(LocalDebuggerWorkingDirectory)\plugins\"
     </ClCompile>
     <ClCompile Include="Plugin.cpp" />
     <ClCompile Include="RegPAPI.cpp" />
+    <ClCompile Include="SignBlock.cpp" />
     <ClCompile Include="SymDBHelper.c" />
   </ItemGroup>
   <ItemGroup>

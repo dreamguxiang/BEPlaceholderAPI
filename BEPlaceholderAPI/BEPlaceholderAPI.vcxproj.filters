@@ -53,6 +53,9 @@
     <ClCompile Include="SymDBHelper.c">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="SignBlock.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource.rc">
