@@ -243,12 +243,6 @@ THook(void, "?tick@ServerLevel@@UEAAXXZ", Level* a1) {
 			TPS::isMSPTing = false;
 		}
 }
-//#include <MC/SignBlockActor.hpp>
-//THook(void*, "?_getUpdatePacket@SignBlockActor@@MEAA?AV?$unique_ptr@VBlockActorDataPacket@@U?$default_delete@VBlockActorDataPacket@@@std@@@std@@AEAVBlockSource@@@Z", SignBlockActor* a1,BlockSource* a2) {
-//	std::cout << "update" << std::endl;
-//	return original(a1, a2);
-//}
-
 #include <ScheduleAPI.h>
 	
 

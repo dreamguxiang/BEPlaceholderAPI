@@ -15,13 +15,13 @@ namespace Settings {
     nlohmann::json globaljson() {
         nlohmann::json json;
         json["Chat"]["Enabled"] = Chat::Enabled;
-		json["Chat"]["CanUseBrackets"] = Chat::CanUseBrackets;
+		//json["Chat"]["CanUseBrackets"] = Chat::CanUseBrackets;
         return json;
     }
 
     void initjson(nlohmann::json json) {
         JSON("Chat", "Enabled", Chat::Enabled);
-		JSON("Chat", "CanUseBrackets", Chat::CanUseBrackets);
+	//	JSON("Chat", "CanUseBrackets", Chat::CanUseBrackets);
     }
 
     void WriteDefaultConfig(const std::string& fileName) {

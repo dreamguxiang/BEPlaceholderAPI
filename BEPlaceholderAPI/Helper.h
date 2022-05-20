@@ -54,15 +54,6 @@ namespace Helper {
 		}
 		return str;
 	}
-	inline class LevelData& getLevelData() {
-		class LevelData& (Level:: * rv)();
-		*((void**)&rv) = dlsym("?getLevelData@Level@@UEAAAEAVLevelData@@XZ");
-		return (Global<Level>->*rv)();
-	}
-
-	inline int getActiveAndInProgressPlayerCount(class mce::UUID a1) {
-		return SymCall("?_getActiveAndInProgressPlayerCount@ServerNetworkHandler@@AEBAHVUUID@mce@@@Z", int, ServerNetworkHandler*, mce::UUID)(Global<ServerNetworkHandler>, a1);
-	}
 
 	inline std::vector<std::string> split(std::string str, std::string pattern)
 	{
@@ -115,6 +106,7 @@ namespace Helper {
 	inline void Backets2Percentage(string& str) {
 		ReplaceStr(str, "{", "%"); ReplaceStr(str, "}", "%");
 	}
+	
 	inline std::tuple<bool, std::map<string, string>> FindPlaceholder(std::string str, std::string str2) {
 		std::map<string,string> map;
 		std::vector<std::string> ori = split(str, "_");
