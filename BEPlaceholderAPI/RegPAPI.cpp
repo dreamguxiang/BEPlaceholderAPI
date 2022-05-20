@@ -1,16 +1,7 @@
 ﻿#include "Global.h"
 #include "PlaceholderAPI.h"
 #include "Helper.h"
-#include <MC/ServerPlayer.hpp>
-#include <MC/ItemStack.hpp>
-#include <MC/AttributeInstance.hpp>
-#include <MC/ServerNetworkHandler.hpp>
-#include <mc/RakPeerHelper.hpp>
-#include <MC/Attribute.hpp>
 #include <ctime>
-#include <EventAPI.h>
-#include <I18nAPI.h>
-#include <MC/LevelChunk.hpp>
 
 namespace TPS {
 	bool isMSPTing = false;

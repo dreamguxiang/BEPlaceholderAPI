@@ -1,21 +1,15 @@
-﻿#include <MC/SignBlockActor.hpp>
-#include <MC/CompoundTag.hpp>
-#include <MC/BlockActorDataPacket.hpp>
-#include <MC/SignItem.hpp>
-#include "Global.h"
+﻿#include "Global.h"
+#include "Helper.h"
 #include "PlaceholderAPI.h"
-#include "ScheduleAPI.h"
+#include <ScheduleAPI.h>
 #include "SignBlock.h"
 
 std::unordered_map<BlockActor*, BlockSource*> SignBlockActorMap;
 
 THook(void*, "?tick@BlockActor@@UEAAXAEAVBlockSource@@@Z",
 	BlockActor* _this, BlockSource* a2) {
-	string typeName = _this->getNbt()->getString("id");
-	//告示牌
-	if (typeName == "Sign") {
-		
-		//存入map
+	auto type = _this->getType();
+	if (type == BlockActorType::Sign) {		
 		SignBlockActorMap.clear();
 		std::pair<BlockActor*, BlockSource*> signBlockData(_this,a2);
 		SignBlockActorMap.insert(signBlockData);
@@ -29,7 +23,7 @@ void UpdateAllSignBlock() {
 		BlockSource* a2 = i.second;
 		SignBlockActor* BlockEntity = (SignBlockActor*)_this;
 
-		auto SignBlockActorNbt = _this->getNbt();
+		auto SignBlockActorNbt = BlockEntity->getNbt();
 		//获取Text
 		string text = SignBlockActorNbt->getString("Text");
 		string placedText;
@@ -38,6 +32,7 @@ void UpdateAllSignBlock() {
 		//更新告示牌
 		BlockEntity->setMessage(placedText, "");
 		BlockEntity->setChanged();
+		
 		auto pkt = BlockEntity->_getUpdatePacket(*a2);
 		Level::sendPacketForAllPlayer(*pkt);
 	}

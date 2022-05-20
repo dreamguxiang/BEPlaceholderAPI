@@ -13,13 +13,24 @@
 #include <MC/Actor.hpp>
 #include <MC/ItemStack.hpp>
 #include "Version.h"
+#include "Setting.h"
 #include <LLAPI.h>
 #include <Utils/StringHelper.h>
 #include <RemoteCallAPI.h>
 #include <ServerAPI.h>
 #include <MC/LevelData.hpp>
-#include "Setting.h"
-
+#include <MC/SignBlockActor.hpp>
+#include <MC/BlockActorDataPacket.hpp>
+#include <MC/SignItem.hpp>
+#include <MC/ServerPlayer.hpp>
+#include <MC/ItemStack.hpp>
+#include <MC/AttributeInstance.hpp>
+#include <MC/ServerNetworkHandler.hpp>
+#include <mc/RakPeerHelper.hpp>
+#include <MC/Attribute.hpp>
+#include <EventAPI.h>
+#include <I18nAPI.h>
+#include <MC/LevelChunk.hpp>
 
 
 extern Logger logger;
