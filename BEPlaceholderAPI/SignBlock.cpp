@@ -28,14 +28,17 @@ void UpdateAllSignBlock() {
 		if (ba) {
 			SignBlockActor* BlockEntity = (SignBlockActor*)ba;
 			auto SignBlockActorNbt = ba->getNbt().get()->clone();
+			string old = SignBlockActorNbt->getString("Text");
 			string text = SignBlockActorNbt->getString("Text");
 			PlaceholderAPI::translateString(text);
-			SignBlockActorNbt->putString("Text", text);
-			BinaryStream bs;
-			bs.writeVarInt(pos.x);bs.writeUnsignedVarInt(pos.y);bs.writeVarInt(pos.z);		
-			bs.writeCompoundTag(*SignBlockActorNbt);
-			NetworkPacket<56> pkt(bs.getAndReleaseData());
-			Level::getDimension(i.dimid)->sendPacketForPosition(pos, pkt, nullptr);
+			if (old != text) {
+				SignBlockActorNbt->putString("Text", text);
+				BinaryStream bs;
+				bs.writeVarInt(pos.x); bs.writeUnsignedVarInt(pos.y); bs.writeVarInt(pos.z);
+				bs.writeCompoundTag(*SignBlockActorNbt);
+				NetworkPacket<56> pkt(bs.getAndReleaseData());
+				Level::sendPacketForAllPlayer(pkt);
+			}
 		}
 	}
 }
