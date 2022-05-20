@@ -27,6 +27,37 @@ public:
 		return z < rhs.z;
 	}
 };
+struct Vec4 {
+	Vec3 vc;
+	char dimid;
+
+	string toStr() const {
+		return "(" + std::to_string(vc.x) + " , " + std::to_string(vc.y) + " , " + std::to_string(vc.z) + " , " +
+			std::to_string(dimid) + " , " + ")";
+	}
+
+	void teleport(ServerPlayer* wp) {
+		wp->teleport(vc, dimid);
+	}
+
+	Vec4(ServerPlayer* wp) {
+		vc = wp->getPosition();
+		dimid = wp->getDimensionId();
+	}
+
+	Vec4(Vec3 x, int dim) : vc(x), dimid(dim) {}
+	
+	Vec4(const Vec4& vc4) {
+		vc = vc4.vc;
+		dimid = vc4.dimid;
+	}
+	bool operator<(const Vec4& s) const {
+		return true;
+	}
+	Vec4() {}
+};
+
+
 
 enum BlockActorType {
 	Undefined = 0x0,

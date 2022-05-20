@@ -4,42 +4,46 @@
 #include <ScheduleAPI.h>
 #include "SignBlock.h"
 
-std::unordered_map<BlockActor*, BlockSource*> SignBlockActorMap;
+std::set<Vec4> SignBlockActorMap;
+
 
 THook(void*, "?tick@BlockActor@@UEAAXAEAVBlockSource@@@Z",
 	BlockActor* _this, BlockSource* a2) {
 	auto type = _this->getType();
 	if (type == BlockActorType::Sign) {		
-		SignBlockActorMap.clear();
-		std::pair<BlockActor*, BlockSource*> signBlockData(_this,a2);
-		SignBlockActorMap.insert(signBlockData);
+		auto dim = SymCall("?getDimension@BlockSource@@UEAAAEAVDimension@@XZ", Dimension*, BlockSource*)(a2);
+		SignBlockActorMap.emplace(Vec4{ _this->getPosition().toVec3(),dim->getDimensionId()});
 	}
 	return original(_this, a2);
 }
 
+
+#include <MC/BinaryStream.hpp>
+#include <SendPacketAPI.h>
 void UpdateAllSignBlock() {
-	for (auto i : SignBlockActorMap) {
-		BlockActor* _this = i.first;
-		BlockSource* a2 = i.second;
-		SignBlockActor* BlockEntity = (SignBlockActor*)_this;
-
-		auto SignBlockActorNbt = BlockEntity->getNbt();
-		//获取Text
-		string text = SignBlockActorNbt->getString("Text");
-		string placedText;
-		PlaceholderAPI::translateString(placedText);
-
-		//更新告示牌
-		BlockEntity->setMessage(placedText, "");
-		BlockEntity->setChanged();
-		
-		auto pkt = BlockEntity->_getUpdatePacket(*a2);
-		Level::sendPacketForAllPlayer(*pkt);
+	for (auto& i : SignBlockActorMap) {
+		auto bs = Level::getBlockSource(i.dimid);
+		auto pos = i.vc.toBlockPos();
+		auto ba = bs->getBlockEntity(pos);
+		if (ba) {
+			SignBlockActor* BlockEntity = (SignBlockActor*)ba;
+			auto SignBlockActorNbt = ba->getNbt().get()->clone();
+			string text = SignBlockActorNbt->getString("Text");
+			PlaceholderAPI::translateString(text);
+			SignBlockActorNbt->putString("Text", text);
+			BinaryStream bs;
+			bs.writeVarInt(pos.x);bs.writeUnsignedVarInt(pos.y);bs.writeVarInt(pos.z);		
+			bs.writeCompoundTag(*SignBlockActorNbt);
+			NetworkPacket<56> pkt(bs.getAndReleaseData());
+			Level::getDimension(i.dimid)->sendPacketForPosition(pos, pkt, nullptr);
+		}
 	}
 }
 
 void initSchedule() {
 	//20Tick自动更新
-	Schedule::repeat(UpdateAllSignBlock, 20);
+	Schedule::repeat([] {
+		UpdateAllSignBlock();
+		}, 20);
 }
 
