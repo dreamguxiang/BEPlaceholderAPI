@@ -148,7 +148,7 @@ void regServerInit() {
 		return Helper::getTime("%H:%M:%S");
 		});
 	PlaceholderAPI::registerServerPlaceholder("server_online", []() {
-		return S(Helper::getActiveAndInProgressPlayerCount(mce::UUID::EMPTY));
+		return S(Global<ServerNetworkHandler>->getActiveAndInProgressPlayerCount(mce::UUID::EMPTY));
 		});
 	
 	PlaceholderAPI::registerServerPlaceholder("server_max_players", []() {
@@ -165,7 +165,7 @@ void regServerInit() {
 		return S(Level::getAllEntities().size());
 		});
 	PlaceholderAPI::registerServerPlaceholder("server_world_name", []() {
-		return Helper::getLevelData().getLevelName();
+		return Global<Level>->getLevelData().getLevelName();
 		});
 	PlaceholderAPI::registerServerPlaceholder("server_seed", []() {
 		return Global<PropertiesSettings>->getLevelSeed();
