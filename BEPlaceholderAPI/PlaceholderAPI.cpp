@@ -229,6 +229,7 @@ void EventInit() {
 }
 
 void  RegPAPInit();
+void initSchedule();
 
 void PAPIinit() {
 	
@@ -238,4 +239,5 @@ void PAPIinit() {
 	EXPORTAPI(RemoteCall::GetValueWithPlayer);
 	EventInit();
 	RegPAPInit();
+	initSchedule();
 }

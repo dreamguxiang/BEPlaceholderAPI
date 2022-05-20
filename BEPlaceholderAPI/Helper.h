@@ -1,10 +1,11 @@
-#pragma once
+﻿#pragma once
 #include "Global.h"
 #include <regex>
 #include <windows.h>
 #include <Pdh.h>
 #include <PdhMsg.h>
 #include <psapi.h>
+
 #pragma comment(lib,"psapi.lib")
 typedef std::chrono::high_resolution_clock timer_clock;
 #define TIMER_START auto start = timer_clock::now();
@@ -154,3 +155,5 @@ namespace Helper {
 		return ram;
 	}
 }
+
+

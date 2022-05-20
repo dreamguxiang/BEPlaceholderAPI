@@ -22,6 +22,9 @@
     <ClCompile Include="dllmain.cpp">
       <Filter>SourceFile</Filter>
     </ClCompile>
+    <ClCompile Include="SignBlock.cpp">
+      <Filter>SourceFile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Helper.h">
@@ -43,6 +46,9 @@
       <Filter>Head</Filter>
     </ClInclude>
     <ClInclude Include="Setting.h">
+      <Filter>Head</Filter>
+    </ClInclude>
+    <ClInclude Include="SignBlock.h">
       <Filter>Head</Filter>
     </ClInclude>
   </ItemGroup>
