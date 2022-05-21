@@ -131,7 +131,7 @@ void regPlayerInit() {
 
 void regServerInit() {
 
-	PlaceholderAPI::registerServerPlaceholder("server_time_<format>", [](std::map<string, string> map) {	
+	PlaceholderAPI::registerServerPlaceholder("server_time_<format>_s", [](std::unordered_map<string, string> map) {
 			if (map.find("<format>") != map.end()) {
 				if ("<format>" != map["<format>"])
 					return Helper::getTime(map["<format>"]);
@@ -245,17 +245,13 @@ void RegPAPInit() {
 	regPlayerInit();
 	regServerInit();
 }
+
 /*
 //系统
 string cpu_ = m_replace(cmd, "{cpu}", getCPUUsed());
-string ramAll_ = m_replace(cpu_, "{ramAll}", ram["all"]);
-string ramUse_ = m_replace(ramAll_, "{ramUse}", ram["used"]);
-string ramPercent_ = m_replace(ramUse_, "{ranPercent}", ram["percent"]);
-string ramCan_ = m_replace(ramPercent_, "{ramCan}", ram["canuse"]);
 */
 
 /*
-%server_tps% 服务器TPS
 %server_tps_1% 服务器当前TPS
 %server_tps_5% 服务器 5 分钟前TPS
 %server_tps_15% 服务器 15 分钟前TPS

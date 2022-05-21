@@ -7,7 +7,7 @@ std::unordered_map<string, PlaceholderAPI>  updatePlaceholders;
 #define EXPORTAPI(T) RemoteCall::exportAs(PLUGIN_NAME, Helper::ReplaceStr(#T,"RemoteCall::","") , T);
 
 
-PlaceholderAPI::PlaceholderAPI(string Name, int UpdateInterval, bool AutoUpdate, bool ProcessPlayer,bool ProcessParameters,string PluginName,std::function<string(class Player*)> callback, std::function<string(class Player*, std::map<string, string>)> CallbackWithParameters) {
+PlaceholderAPI::PlaceholderAPI(string Name, int UpdateInterval, bool AutoUpdate, bool ProcessPlayer,bool ProcessParameters,string PluginName,std::function<string(class Player*)> callback, std::function<string(class Player*, std::unordered_map<string, string>)> CallbackWithParameters) {
 	for (auto& i : GlobalPAPI) {
 		if (i.second.mName == Name) {
 			logger.warn("Placeholder {} tried to register which is already used", i.second.mName);
@@ -15,7 +15,7 @@ PlaceholderAPI::PlaceholderAPI(string Name, int UpdateInterval, bool AutoUpdate,
 		}
 	}
 	
-	mName = '%' +Name+ '%';
+	mName = "%" + Name + "%";
 	mUpdateInterval = UpdateInterval;
 	mAutoUpdate = AutoUpdate;
 	mProcessParameters = ProcessParameters;
@@ -49,7 +49,7 @@ void PlaceholderAPI::registerStaticPlaceholder(string name, string(*Func)(), str
 {
 	bool isProcessParameters = false;
 	if(Helper::isParameters(name)) isProcessParameters = true;
-	PlaceholderAPI a1(name, -1, false, false, isProcessParameters,"", [Func](Player* sp) {
+	PlaceholderAPI a1(name, -1, false, false, isProcessParameters, PluginName, [Func](Player* sp) {
 		return Func();
 		},nullptr);
 	registerPlaceholder(a1);
@@ -59,7 +59,7 @@ void PlaceholderAPI::registerStaticPlaceholder(string name, string value, string
 {
 	bool isProcessParameters = false;
 	if (Helper::isParameters(name)) isProcessParameters = true;
-	PlaceholderAPI a1(name, -1, false, false, isProcessParameters, "", [value](Player* sp) {
+	PlaceholderAPI a1(name, -1, false, false, isProcessParameters, PluginName, [value](Player* sp) {
 		return value;
 		}, nullptr);
 	registerPlaceholder(a1);
@@ -69,21 +69,21 @@ void PlaceholderAPI::registerStaticPlaceholder(string name, int UpdateInterval, 
 {
 	bool isProcessParameters = false;
 	if (Helper::isParameters(name)) isProcessParameters = true;
-	PlaceholderAPI a1(name, UpdateInterval, true, false, isProcessParameters, "", [Func](Player* sp) {
+	PlaceholderAPI a1(name, UpdateInterval, true, false, isProcessParameters, PluginName, [Func](Player* sp) {
 		return Func();
 		}, nullptr);
 	registerPlaceholder(a1);
 }
 
 void PlaceholderAPI::registerServerPlaceholder(string name, std::function<string()> callback, string PluginName) {
-	PlaceholderAPI a1(name, -1, false, false, false, "", [callback](Player* sp) {
+	PlaceholderAPI a1(name, -1, false, false, false, PluginName, [callback](Player* sp) {
 		return callback();
 		}, nullptr);
 	registerPlaceholder(a1);
 }
 
-void PlaceholderAPI::registerServerPlaceholder(string name, std::function<string(std::map<string, string>)> callback, string PluginName) {
-	PlaceholderAPI a1(name, -1, false, false, true, "", nullptr, [callback](Player* sp, std::map<string, string> map) {
+void PlaceholderAPI::registerServerPlaceholder(string name, std::function<string(std::unordered_map<string, string>)> callback, string PluginName) {
+	PlaceholderAPI a1(name, -1, false, false, true, PluginName, nullptr, [callback](Player* sp, std::unordered_map<string, string> map) {
 		return callback(map);
 		});
 	registerPlaceholder(a1);
@@ -95,7 +95,7 @@ void  PlaceholderAPI::registerPlayerPlaceholder(string name, std::function<strin
 	registerPlaceholder(a1);
 }
 
-void  PlaceholderAPI::registerPlayerPlaceholder(string name, std::function<string(class Player*, std::map<string, string>)> callback, string PluginName) {
+void  PlaceholderAPI::registerPlayerPlaceholder(string name, std::function<string(class Player*, std::unordered_map<string, string>)> callback, string PluginName) {
 	PlaceholderAPI a1(name, -1, false, true, true, PluginName, nullptr, callback);
 	registerPlaceholder(a1);
 }
@@ -204,14 +204,36 @@ namespace RemoteCall {
 		return	PlaceholderAPI::getValue(a1, Level::getPlayer(a2));
 	}
 
-	std::string registerInit(std::string const& PluginName, std::string const& FuncName, std::string const& PAPIName)
+	std::string registerPlayerPlaceholder(std::string const& PluginName, std::string const& FuncName, std::string const& PAPIName)
 	{
 		auto Call = RemoteCall::importAs<string(std::string const& arg)>(PluginName, FuncName);
 		PlaceholderAPI::registerPlayerPlaceholder(PAPIName, [Call](Player* sp) {
 			return Call(sp->getXuid());
 			}, PluginName);
-		return "success";
+		return "";
 	}
+	
+	std::string registerServerPlaceholderByParameters(std::string const& PluginName, std::string const& FuncName, std::string const& PAPIName)
+	{
+		auto Call = RemoteCall::importAs<string(std::unordered_map<string, string>)>(PluginName, FuncName);
+		auto& rawFunc = RemoteCall::importFunc(PluginName, FuncName);
+		std::cout << rawFunc.target_type().hash_code() << std::endl;
+
+		PlaceholderAPI::registerServerPlaceholder(PAPIName, [Call](std::unordered_map<string, string> map) {
+			return Call(map);
+			}, PluginName);
+		return "";
+	}
+
+	std::string registerServerPlaceholder(std::string const& PluginName, std::string const& FuncName, std::string const& PAPIName)
+	{
+		auto Call = RemoteCall::importAs<string()>(PluginName, FuncName);
+		PlaceholderAPI::registerServerPlaceholder(PAPIName, [Call]() {
+			return Call();
+			}, PluginName);
+		return "";
+	}
+	
 }
 
 void EventInit() {
@@ -235,10 +257,13 @@ void initSchedule();
 void PAPIinit() {
 	
 	updatePlaceholder();
-	EXPORTAPI(RemoteCall::registerInit);
+	EXPORTAPI(RemoteCall::registerPlayerPlaceholder);
+	EXPORTAPI(RemoteCall::registerServerPlaceholderByParameters);
+	EXPORTAPI(RemoteCall::registerServerPlaceholder);
 	EXPORTAPI(RemoteCall::GetValue);
 	EXPORTAPI(RemoteCall::GetValueWithPlayer);
 	EventInit();
 	RegPAPInit();
 	initSchedule();
+	Helper::getTime("yyyy");
 }
