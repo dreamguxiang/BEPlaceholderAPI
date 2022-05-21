@@ -265,5 +265,4 @@ void PAPIinit() {
 	EventInit();
 	RegPAPInit();
 	initSchedule();
-	Helper::getTime("yyyy");
 }
