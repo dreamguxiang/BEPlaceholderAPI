@@ -217,9 +217,77 @@ void regServerInit() {
 		});
 }
 
+LARGE_INTEGER freq_;
+auto INITPERFORMANCE = QueryPerformanceFrequency(&freq_);
+
+LARGE_INTEGER begin_time;
+LARGE_INTEGER end_time;
+inline double ns_time()
+{
+	return (end_time.QuadPart - begin_time.QuadPart) * 1000000.0 / freq_.QuadPart;
+}
+
+#define TestLogTime(func, ...)            \
+    QueryPerformanceCounter(&begin_time); \
+    func(__VA_ARGS__);                    \
+    QueryPerformanceCounter(&end_time);   \
+    logger.warn("  {}\t time: {}ns", #func, ns_time());
+constexpr int TEST_COUNT = 1000000;
+
+
+void getValue()
+{
+		PlaceholderAPI::getValue("%server_tps%");
+}
+
+void translateString()
+{
+	string str = "hi%server_tps%";
+	PlaceholderAPI::translateString(str);
+}
+
+void translateString2()
+{
+	string str = "hi%server_time_y%";
+	PlaceholderAPI::translateString(str);
+}
+
+void translateString3()
+{
+	string str = "hi%server_time_y%%server_tps%";
+	PlaceholderAPI::translateString(str);
+}
+
+void testMCAPI()
+{
+	TestLogTime(getValue);
+	TestLogTime(translateString);
+	TestLogTime(translateString2);
+	TestLogTime(translateString3);
+	TestLogTime(getValue);
+	TestLogTime(translateString);
+	TestLogTime(translateString2);
+	TestLogTime(translateString3);
+	TestLogTime(getValue);
+	TestLogTime(translateString);
+	TestLogTime(translateString2);
+	TestLogTime(translateString3);
+	TestLogTime(getValue);
+	TestLogTime(translateString);
+	TestLogTime(translateString2);
+	TestLogTime(translateString3);
+	TestLogTime(getValue);
+	TestLogTime(translateString);
+	TestLogTime(translateString2);
+	TestLogTime(translateString3);	
+	TestLogTime(getValue);
+	TestLogTime(translateString);
+	TestLogTime(translateString2);
+	TestLogTime(translateString3);
+};
 void ListenEvent() {
 	Event::ServerStartedEvent::subscribe_ref([](Event::ServerStartedEvent& ev) {
-		startTime = std::time(0);
+		//testMCAPI();
 		return true;
 		});
 }
@@ -244,6 +312,7 @@ void RegPAPInit() {
 		},20);
 	regPlayerInit();
 	regServerInit();
+	ListenEvent();
 }
 
 /*

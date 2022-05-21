@@ -15,6 +15,8 @@ typedef std::chrono::high_resolution_clock timer_clock;
         std::chrono::duration_cast<std::chrono::microseconds>(elapsed) \
             .count();
 
+
+
 class ChunkPos2 {
 	int       x, z;
 public:
@@ -193,7 +195,7 @@ namespace Helper {
 	}
 
 	inline vector<string> getPercentage(std::string str) {
-		std::regex reg("[%]([^%]*)([^_]*)[%]");
+		std::regex reg("[%]([^%]*)[%]");
 		vector<string> result;
 		for (std::sregex_iterator i = std::sregex_iterator(str.begin(), str.end(), reg); i != std::sregex_iterator(); ++i) {
 			result.push_back((*i).str());
@@ -204,6 +206,15 @@ namespace Helper {
 	inline void Backets2Percentage(string& str) {
 		ReplaceStr(str, "{", "%"); ReplaceStr(str, "}", "%");
 	}
+	inline bool isSame(std::vector<std::string> a1, std::vector<std::string> a2, int a3) {
+		if (a1.size() != a2.size())
+			return false;
+		for (int i = 0; i < a3; i++) {
+			if (a1[i] != a2[i])
+				return false;
+		}
+		return true;
+	}
 	
 	inline std::tuple<bool, std::unordered_map<string, string>> FindPlaceholder(std::string str, std::string str2) {
 		std::unordered_map<string,string> map;
@@ -212,15 +223,18 @@ namespace Helper {
 		if (ori.size() != input.size()) return std::make_tuple(false,map);
 		for (int i = 0; i < ori.size(); i++) {			
 			if (ori[i] != input[i]) {
-				if (isParameters(ori[i])) {
-					map.emplace(std::pair{ removeBrackets(ori[i]),removeBrackets(input[i])});
-					if (ori[i].find("%") != string::npos) {
-						return std::make_tuple(true, map);
+				if (isSame(ori, input, i)) {
+					if (isParameters(ori[i])) {
+						map.emplace(std::pair{ removeBrackets(ori[i]),removeBrackets(input[i]) });
+						ori[i] = input[i];
+						if (ori[i].find("%") != string::npos) {
+							return std::make_tuple(true, map);
+						}
 					}
 				}
-			}		
+			}
 		}
-		if (map.empty())
+		if (map.empty() || !isSame(ori, input, ori.size()))
 			return std::make_tuple(false, map);
 		else
 			return std::make_tuple(true, map);

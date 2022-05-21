@@ -123,6 +123,9 @@ string PlaceholderAPI::getValue(string a1,Player* sp) {
 			if (i.second.mProcessParameters) {
 				auto [out, map] = Helper::FindPlaceholder(i.first, a1);
 				if (out) {
+					for (auto i : map) {
+						std::cout << i.first << " " << i.second << std::endl;
+					}
 					return i.second.mCallbackWithParameters(sp, map);
 				}
 			}
@@ -216,8 +219,8 @@ namespace RemoteCall {
 	std::string registerServerPlaceholderByParameters(std::string const& PluginName, std::string const& FuncName, std::string const& PAPIName)
 	{
 		auto Call = RemoteCall::importAs<string(std::unordered_map<string, string>)>(PluginName, FuncName);
-		auto& rawFunc = RemoteCall::importFunc(PluginName, FuncName);
-		std::cout << rawFunc.target_type().hash_code() << std::endl;
+		//auto& rawFunc = RemoteCall::importFunc(PluginName, FuncName);
+		//std::cout << rawFunc.target_type().name() << std::endl;
 
 		PlaceholderAPI::registerServerPlaceholder(PAPIName, [Call](std::unordered_map<string, string> map) {
 			return Call(map);
@@ -265,4 +268,5 @@ void PAPIinit() {
 	EventInit();
 	RegPAPInit();
 	initSchedule();
+	
 }
