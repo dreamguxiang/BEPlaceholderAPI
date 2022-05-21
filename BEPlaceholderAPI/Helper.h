@@ -108,18 +108,26 @@ enum BlockActorType {
 	SculkCatalyst = 0x30,
 	SculkShrieker = 0x31
 };
-
+#include <ScheduleAPI.h>
+#include <algorithm>
 namespace Helper {
+
 	inline string getTime(string format)
 	{
-		time_t rawtime;
-		tm* LocTime;
-		char timestr[20];
-		time(&rawtime);
-		LocTime = localtime(&rawtime);
-		strftime(timestr, 20, format.c_str(), LocTime);
-		return string(timestr);
+		//transform(format.begin(), format.end(), format.begin(), tolower);
+		SYSTEMTIME st;
+		GetLocalTime(&st);
+		ReplaceStr(format, "%ms", S(st.wMilliseconds));
+		ReplaceStr(format, "%y", S(st.wYear));
+		ReplaceStr(format, "%m", S(st.wMonth));
+		ReplaceStr(format, "%d", S(st.wDay));
+		ReplaceStr(format, "%H", S(st.wHour));
+		ReplaceStr(format, "%M", S(st.wMinute));
+		ReplaceStr(format, "%S", S(st.wSecond));
+		//string time = fmt::format("{:" + format + "}", fmt::localtime(_time64(0)));
+		return format;
 	}
+	
 	inline string checkPAPIName(string x) {
 		if (x.find('%') != x.npos && x.find('%') != x.npos) 
 			return x;

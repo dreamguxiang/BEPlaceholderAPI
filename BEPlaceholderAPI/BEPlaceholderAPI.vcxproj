@@ -48,6 +48,7 @@
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>$(SolutionDir)SDK\Header\third-party;$(SolutionDir)SDK\Header;$(VC_IncludePath);$(WindowsSDK_IncludePath);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <ExceptionHandling>Async</ExceptionHandling>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -99,7 +100,6 @@ copy /Y "$(TargetPath)" "$(LocalDebuggerWorkingDirectory)\plugins\"
     <ClCompile Include="RegPAPI.cpp" />
     <ClCompile Include="Setting.cpp" />
     <ClCompile Include="SignBlock.cpp" />
-    <ClCompile Include="SymDBHelper.c" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource.rc" />

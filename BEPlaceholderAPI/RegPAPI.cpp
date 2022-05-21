@@ -132,10 +132,11 @@ void regPlayerInit() {
 void regServerInit() {
 
 	PlaceholderAPI::registerServerPlaceholder("server_time_<format>", [](std::map<string, string> map) {	
-		if(map.find("<format>") != map.end()) {
-			if("<format>" != map["<format>"])
-				return Helper::getTime(map["<format>"]);
-		}
+			if (map.find("<format>") != map.end()) {
+				if ("<format>" != map["<format>"])
+					return Helper::getTime(map["<format>"]);
+			}
+		
 		return Helper::getTime("%H:%M:%S");
 		});
 	PlaceholderAPI::registerServerPlaceholder("server_online", []() {
