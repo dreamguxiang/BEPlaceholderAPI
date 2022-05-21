@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "Global.h"
 #include <regex>
 #include <windows.h>
@@ -114,26 +114,14 @@ namespace Helper {
 
 	inline string getTime(string format)
 	{
-
-		//transform(format.begin(), format.end(), format.begin(), tolower);
 		std::time_t nowTime = std::time(0);
 		SYSTEMTIME st;
 		GetLocalTime(&st);
 		ReplaceStr(format, "%ms", S(st.wMilliseconds));
-		string formatTime[22] = {"y","Y","m","d","H","M","S","a","A","b","B","c","I","j","p","U","w","W","x","X","Z"};
+		string formatTime[21] = {"y","Y","m","d","H","M","S","a","A","b","B","c","I","j","p","U","w","W","x","X","Z"};
 		for (string i : formatTime) {
 			ReplaceStr(format, "%" + i, fmt::format("{:%"+i+"}", fmt::localtime(nowTime)));
 		}
-		/*ReplaceStr(format, "%y", fmt::format("{:%y}", fmt::localtime(_time64(0))));
-		ReplaceStr(format, "%Y", fmt::format("{:%Y}", fmt::localtime(_time64(0))));
-		ReplaceStr(format, "%m", fmt::format("{:%m}", fmt::localtime(_time64(0))));
-		ReplaceStr(format, "%d", fmt::format("{:%d}", fmt::localtime(_time64(0))));
-		ReplaceStr(format, "%H", fmt::format("{:%H}", fmt::localtime(_time64(0))));
-		ReplaceStr(format, "%M", fmt::format("{:%M}", fmt::localtime(_time64(0))));
-		ReplaceStr(format, "%S", fmt::format("{:%S}", fmt::localtime(_time64(0))));
-		ReplaceStr(format, "%a", fmt::format("{:%a}", fmt::localtime(_time64(0))));
-		ReplaceStr(format, "%A", fmt::format("{:%A}", fmt::localtime(_time64(0))));*/
-		//string time = fmt::format("{:" + format + "}", fmt::localtime(_time64(0)));
 		return format;
 	}
 	
@@ -205,8 +193,8 @@ namespace Helper {
 		ReplaceStr(str, "{", "%"); ReplaceStr(str, "}", "%");
 	}
 	
-	inline std::tuple<bool, std::unordered_map<string, string>> FindPlaceholder(std::string str, std::string str2) {
-		std::unordered_map<string,string> map;
+	inline std::tuple<bool, std::map<string, string>> FindPlaceholder(std::string str, std::string str2) {
+		std::map<string,string> map;
 		std::vector<std::string> ori = split(str, "_");
 		std::vector<std::string> input = split(str2, "_");
 		if (ori.size() != input.size()) return std::make_tuple(false,map);
