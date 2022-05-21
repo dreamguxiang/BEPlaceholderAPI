@@ -204,8 +204,8 @@ namespace Helper {
 		return true;
 	}
 	
-	inline std::tuple<bool, std::map<string, string>> FindPlaceholder(std::string str, std::string str2) {
-		std::map<string,string> map;
+	inline std::tuple<bool, std::unordered_map<string, string>> FindPlaceholder(std::string str, std::string str2) {
+		std::unordered_map<string,string> map;
 		std::vector<std::string> ori = split(str, "_");
 		std::vector<std::string> input = split(str2, "_");
 		if (ori.size() != input.size()) return std::make_tuple(false,map);

@@ -123,9 +123,6 @@ string PlaceholderAPI::getValue(string a1,Player* sp) {
 			if (i.second.mProcessParameters) {
 				auto [out, map] = Helper::FindPlaceholder(i.first, a1);
 				if (out) {
-					for (auto i : map) {
-						std::cout << i.first << " " << i.second << std::endl;
-					}
 					return i.second.mCallbackWithParameters(sp, map);
 				}
 			}
