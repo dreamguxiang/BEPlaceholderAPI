@@ -114,16 +114,25 @@ namespace Helper {
 
 	inline string getTime(string format)
 	{
+
 		//transform(format.begin(), format.end(), format.begin(), tolower);
+		std::time_t nowTime = std::time(0);
 		SYSTEMTIME st;
 		GetLocalTime(&st);
 		ReplaceStr(format, "%ms", S(st.wMilliseconds));
-		ReplaceStr(format, "%y", S(st.wYear));
-		ReplaceStr(format, "%m", S(st.wMonth));
-		ReplaceStr(format, "%d", S(st.wDay));
-		ReplaceStr(format, "%H", S(st.wHour));
-		ReplaceStr(format, "%M", S(st.wMinute));
-		ReplaceStr(format, "%S", S(st.wSecond));
+		string formatTime[22] = {"y","Y","m","d","H","M","S","a","A","b","B","c","I","j","p","U","w","W","x","X","Z"};
+		for (string i : formatTime) {
+			ReplaceStr(format, "%" + i, fmt::format("{:%"+i+"}", fmt::localtime(nowTime)));
+		}
+		/*ReplaceStr(format, "%y", fmt::format("{:%y}", fmt::localtime(_time64(0))));
+		ReplaceStr(format, "%Y", fmt::format("{:%Y}", fmt::localtime(_time64(0))));
+		ReplaceStr(format, "%m", fmt::format("{:%m}", fmt::localtime(_time64(0))));
+		ReplaceStr(format, "%d", fmt::format("{:%d}", fmt::localtime(_time64(0))));
+		ReplaceStr(format, "%H", fmt::format("{:%H}", fmt::localtime(_time64(0))));
+		ReplaceStr(format, "%M", fmt::format("{:%M}", fmt::localtime(_time64(0))));
+		ReplaceStr(format, "%S", fmt::format("{:%S}", fmt::localtime(_time64(0))));
+		ReplaceStr(format, "%a", fmt::format("{:%a}", fmt::localtime(_time64(0))));
+		ReplaceStr(format, "%A", fmt::format("{:%A}", fmt::localtime(_time64(0))));*/
 		//string time = fmt::format("{:" + format + "}", fmt::localtime(_time64(0)));
 		return format;
 	}
