@@ -18,8 +18,8 @@ For each feature in this plugin, you can use the command "/papi" or revise the c
 *You can disable the above functions*
 
 ## For plug-in developers
-- <details><summary>
-    </summary>Script plug-in fast access API
+- <details><summary>Script plug-in fast access API
+    </summary>
     <span>Js language API</span>
     <img src="Docs/images/jslib.png">
     <span>Lua language API</span>
