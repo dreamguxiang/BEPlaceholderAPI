@@ -113,16 +113,34 @@ enum BlockActorType {
 #include <ScheduleAPI.h>
 #include <algorithm>
 namespace Helper {
-
-	inline string getTime(string format)
+	inline SYSTEMTIME Timet2SystemTime(time_t t)
 	{
-		std::time_t nowTime = std::time(0);
+		FILETIME ft;
+		SYSTEMTIME pst;
+		LONGLONG nLL = Int32x32To64(t, 10000000) + 116444736000000000;
+		ft.dwLowDateTime = (DWORD)nLL;
+		ft.dwHighDateTime = (DWORD)(nLL >> 32);
+		FileTimeToSystemTime(&ft, &pst);
+		return pst;
+	}
+
+	inline string getTime(string format,std::time_t inTime = -1)
+	{
+		std::time_t nowTime;
 		SYSTEMTIME st;
-		GetLocalTime(&st);
+		//指定时间
+		if (inTime == -1) {
+			nowTime = std::time(0);
+		}
+		else {
+			nowTime = inTime;
+		}
+		st = Timet2SystemTime(nowTime);
+		
 		ReplaceStr(format, "%ms", S(st.wMilliseconds));
 		string formatTime[21] = {"y","Y","m","d","H","M","S","a","A","b","B","c","I","j","p","U","w","W","x","X","Z"};
 		for (string i : formatTime) {
-			ReplaceStr(format, "%" + i, fmt::format("{:%"+i+"}", fmt::localtime(nowTime)));
+			ReplaceStr(format, i, fmt::format("{:%"+i+"}", fmt::localtime(nowTime)));
 		}
 		return format;
 	}

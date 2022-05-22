@@ -30,14 +30,21 @@ void UpdateAllSignBlock() {
 			auto SignBlockActorNbt = ba->getNbt().get()->clone();
 			string old = SignBlockActorNbt->getString("Text");
 			string text = SignBlockActorNbt->getString("Text");
-			PlaceholderAPI::translateString(text);
-			if (old != text) {
-				SignBlockActorNbt->putString("Text", text);
-				BinaryStream bs;
-				bs.writeVarInt(pos.x); bs.writeUnsignedVarInt(pos.y); bs.writeVarInt(pos.z);
-				bs.writeCompoundTag(*SignBlockActorNbt);
-				NetworkPacket<56> pkt(bs.getAndReleaseData());
-				Level::sendPacketForAllPlayer(pkt);
+			//给指定玩家发包
+			auto playerList = Level::getAllPlayers();
+			for (Player* pl : playerList) {
+				//获取指定玩家的包
+				string placeHolder = text;
+				PlaceholderAPI::translateString(placeHolder,pl);
+				if (old != placeHolder) {
+					SignBlockActorNbt->putString("Text", placeHolder);
+					BinaryStream bs;
+					bs.writeVarInt(pos.x); bs.writeUnsignedVarInt(pos.y); bs.writeVarInt(pos.z);
+					bs.writeCompoundTag(*SignBlockActorNbt);
+					NetworkPacket<56> pkt(bs.getAndReleaseData());
+					//Level::sendPacketForAllPlayer(pkt);
+					pl->sendNetworkPacket(pkt);
+				}
 			}
 		}
 	}
@@ -47,6 +54,6 @@ void initSchedule() {
 	//20Tick自动更新
 	Schedule::repeat([] {
 		UpdateAllSignBlock();
-		}, 20);
+	}, 20);
 }
 

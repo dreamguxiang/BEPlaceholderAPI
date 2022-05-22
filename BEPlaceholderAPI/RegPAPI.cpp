@@ -66,7 +66,8 @@ void regPlayerInit() {
 		});
 
 	PlaceholderAPI::registerPlayerPlaceholder("player_flying", [](Player* sp) {
-		return S(sp->canFly());
+		bool flying = sp->getNbt()->getCompound("abilities")->getBoolean("flying");
+		return S(flying);
 		});
 
 	PlaceholderAPI::registerPlayerPlaceholder("player_can_fly", [](Player* sp) {
@@ -137,7 +138,7 @@ void regServerInit() {
 					return Helper::getTime(map["<format>"]);
 			}
 		
-		return Helper::getTime("%H:%M:%S");
+		return Helper::getTime("H:M:S");
 		});
 	PlaceholderAPI::registerServerPlaceholder("server_online", []() {
 		return S(Global<ServerNetworkHandler>->getActiveAndInProgressPlayerCount(mce::UUID::EMPTY));
@@ -177,6 +178,15 @@ void regServerInit() {
 	PlaceholderAPI::registerServerPlaceholder("server_uptime", []() {
 		return S(std::time(0) - startTime);
 		});
+	PlaceholderAPI::registerServerPlaceholder("server_start_time_<format>_s", [](std::unordered_map<string, string> map) {
+		if (map.find("<format>") != map.end()) {
+			if ("<format>" != map["<format>"])
+				return Helper::getTime(map["<format>"], startTime);
+		}
+
+		return Helper::getTime("H:M:S",startTime);
+		});
+
 	PlaceholderAPI::registerServerPlaceholder("server_name", []() {
 		return Global<PropertiesSettings>->getMotd();
 		});
@@ -288,6 +298,7 @@ void testMCAPI()
 void ListenEvent() {
 	Event::ServerStartedEvent::subscribe_ref([](Event::ServerStartedEvent& ev) {
 		//testMCAPI();
+		startTime = std::time(0);
 		return true;
 		});
 }
