@@ -28,7 +28,7 @@ For each feature in this plugin, you can use the command "/papi" or revise the c
 
 
 ### 💻Download
-Please go to [Releases page](https://github.com/dreamguxiang/BEPlaceholderAPI/releases)to download the latest version.
+Please go to [Releases page](https://github.com/dreamguxiang/BEPlaceholderAPI/releases) to download the latest version.
 
 ### 🎯 安装和使用
 
