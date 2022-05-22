@@ -5,8 +5,8 @@
 void RegCommand()
 {
     using ParamType = DynamicCommand::ParameterType;
-    auto command = DynamicCommand::createCommand("papi", "papi command", CommandPermissionLevel::GameMasters);
-
+    auto command = DynamicCommand::createCommand("placeholder", "papi command", CommandPermissionLevel::GameMasters);
+    command->setAlias("papi");
     auto& PAPIEnumList = command->setEnum("PAPIList", { "list" });
     auto& PAPIEnumInfo = command->setEnum("PAPIInfo", { "info","unregister" });
     command->mandatory("PAPIEnum", ParamType::Enum, PAPIEnumList, CommandParameterOption::EnumAutocompleteExpansion);
