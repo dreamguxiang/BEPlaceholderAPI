@@ -2,6 +2,7 @@
 #include "PlaceholderAPI.h"
 #include "ScheduleAPI.h"
 #include "Helper.h"
+
 std::unordered_map<string, PlaceholderAPI>  GlobalPAPI;
 std::unordered_map<string, PlaceholderAPI>  updatePlaceholders;
 #define EXPORTAPI(T) RemoteCall::exportAs(PLUGIN_NAME, Helper::ReplaceStr(#T,"RemoteCall::","") , T);
@@ -114,6 +115,22 @@ void  PlaceholderAPI::registerPlayerPlaceholder(string name, std::function<strin
 void  PlaceholderAPI::registerPlayerPlaceholder(string name, std::function<string(class Player*, std::unordered_map<string, string>)> callback, string PluginName) {
 	PlaceholderAPI a1(name, -1, false, true, true, PluginName, nullptr, callback);
 	registerPlaceholder(a1);
+}
+
+bool PlaceholderAPI::unRegisterPlaceholder(string name) {
+	if (GlobalPAPI.find(name) != GlobalPAPI.end()) {
+		GlobalPAPI.erase(name);
+		return true;
+	}
+	else {
+		for (auto& i : GlobalPAPI) {
+			if (i.second.getPluginName() == name) {
+				GlobalPAPI.erase(i.first);
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 string PlaceholderAPI::getValue(string a1,Player* sp) {
@@ -294,6 +311,11 @@ namespace RemoteCall {
 	{
 		return	PlaceholderAPI::getValue(str, Level::getPlayer(xuid));
 	}
+
+	bool unRegisterPlaceholder(std::string const& str)
+	{
+		return PlaceholderAPI::unRegisterPlaceholder(str);
+	}
 }
 
 void EventInit() {
@@ -323,6 +345,7 @@ void PAPIinit() {
 	EXPORTAPI(RemoteCall::GetValue);
 	EXPORTAPI(RemoteCall::GetValueWithPlayer);
 	EXPORTAPI(RemoteCall::translateString);
+	EXPORTAPI(RemoteCall::unRegisterPlaceholder);
 	EventInit();
 	RegPAPInit();
 	initSchedule();

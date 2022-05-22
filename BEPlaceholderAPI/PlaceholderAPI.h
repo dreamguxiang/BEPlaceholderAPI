@@ -37,6 +37,8 @@ public:
 	static void registerServerPlaceholder(string name, std::function<string()> callback, string PluginName = "");
 	static void registerServerPlaceholder(string name, std::function<string(std::unordered_map<string, string>)> callback, string PluginName = "");
 	
+	static bool unRegisterPlaceholder(string name);
+	
 	static void Update(PlaceholderAPI a1);
 	static std::unordered_set<string> getPAPIList();
 	static std::vector<PlaceholderAPI> getPAPIInfoList();

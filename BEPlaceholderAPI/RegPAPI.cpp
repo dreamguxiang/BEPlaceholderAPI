@@ -251,7 +251,7 @@ void translateString()
 
 void translateString2()
 {
-	string str = "hi%server_time_y%";
+	string str = "hi%server_test3%%server_test%%server_test_21231%%server_test_21231%%server_test_21231%%server_test_21231%%server_test_21231%%server_test_21231%%server_test_21231%";
 	PlaceholderAPI::translateString(str);
 }
 

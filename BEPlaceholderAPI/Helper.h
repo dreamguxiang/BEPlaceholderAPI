@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Global.h"
 #include <regex>
 #include <windows.h>
@@ -128,7 +128,7 @@ namespace Helper {
 	{
 		std::time_t nowTime;
 		SYSTEMTIME st;
-		//Ö¸¶¨Ê±¼ä
+		//Specified time
 		if (inTime == -1) {
 			nowTime = std::time(0);
 		}
