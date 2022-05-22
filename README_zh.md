@@ -1,5 +1,5 @@
 # BEPlaceholderAPI
-<img src="Docs/images/logo_long.png">
+<img src="https://s1.328888.xyz/2022/05/22/dOkzd.png">
 
 ##### [English](README.md) | 简体中文
 `BEPlaceholderAPI`是一个给游戏或插件添加公共变量的插件，给插件开发者和服主提供非常丰富而且实用的功能。
@@ -7,11 +7,11 @@
 ## 对于服主
 功能包括但不限于：
 - 动态告示牌变量
-![](Docs/images/sgin.gif)
+![](https://s1.328888.xyz/2022/05/22/dObe3.gif)
 - 插件公共变量
 > 例如:侧边栏 HeadShow等等
 - 聊天公共变量
-![](Docs/images/chat.png)
+![](https://s1.328888.xyz/2022/05/22/dOKvy.png)
 
 *以上功能可以选择关闭*
 
@@ -19,9 +19,9 @@
 - <details><summary>脚本插件快速接入API
     </summary>
     <span>Js语言API</span>
-    <img src="Docs/images/jslib.png">
+    <img src="https://s1.328888.xyz/2022/05/22/dO3IW.png">
     <span>Lua语言API</span>
-    <img src="Docs/images/lualib.png">
+    <img src="https://s1.328888.xyz/2022/05/22/dOn1Q.png">
     </details>
 
 

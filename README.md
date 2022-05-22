@@ -1,5 +1,5 @@
 # BEPlaceholderAPI
-<img src="Docs/images/logo_long.png">
+<img src="https://s1.328888.xyz/2022/05/22/dOkzd.png">
 
 ##### English | [简体中文](README_zh.md)
 `BEPlaceholderAPI` is a plug-in to add public variables to the game or plug-in, plug-in developers and owners to provide very rich and practical functions.
@@ -7,11 +7,11 @@
 ## For the server owner
 including but not limited to below:
 - Dynamic Sgin variables
-![](Docs/images/sgin.gif)
+![](https://s1.328888.xyz/2022/05/22/dObe3.gif)
 - Plug-in public variables
 > For example: sidebar HeadShow and so on
 - Chat public variables
-![](Docs/images/chat.png)
+![](https://s1.328888.xyz/2022/05/22/dOKvy.png)
 
 For each feature in this plugin, you can use the command "/papi" or revise the config file in "/plugins/BEPlaceholderAPI/" to turn it on and off at any time.
 
@@ -21,9 +21,9 @@ For each feature in this plugin, you can use the command "/papi" or revise the c
 - <details><summary>Script plug-in fast access API
     </summary>
     <span>Js language API</span>
-    <img src="Docs/images/jslib.png">
+    <img src="https://s1.328888.xyz/2022/05/22/dO3IW.png">
     <span>Lua language API</span>
-    <img src="Docs/images/lualib.png">
+    <img src="https://s1.328888.xyz/2022/05/22/dOn1Q.png">
     </details>
 
 
