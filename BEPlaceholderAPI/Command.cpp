@@ -8,17 +8,14 @@ void RegCommand()
     auto command = DynamicCommand::createCommand("papi", "papi command", CommandPermissionLevel::GameMasters);
 
     auto& PAPIEnumList = command->setEnum("PAPIList", { "list" });
-    auto& PAPIEnumInfo = command->setEnum("PAPIInfo", { "info" });
-	
+    auto& PAPIEnumInfo = command->setEnum("PAPIInfo", { "info","unregister" });
     command->mandatory("PAPIEnum", ParamType::Enum, PAPIEnumList, CommandParameterOption::EnumAutocompleteExpansion);
     command->mandatory("PAPIEnum", ParamType::Enum, PAPIEnumInfo, CommandParameterOption::EnumAutocompleteExpansion);
-	
     command->mandatory("PAPIName", ParamType::String);
 
 
     command->addOverload({ PAPIEnumList });
     command->addOverload({ PAPIEnumInfo,"PAPIName"});
-	
     command->setCallback([](DynamicCommand const& command, CommandOrigin const& origin, CommandOutput& output, std::unordered_map<std::string, DynamicCommand::Result>& results) {
         auto action = results["PAPIEnum"].get<std::string>();
         string str = "";
@@ -36,6 +33,7 @@ void RegCommand()
             output.success(str);
             break;
         }
+        
         case do_hash("info"): {
             auto PAPIName = results["PAPIName"].get<std::string>();
             auto list = PlaceholderAPI::getPAPIInfoList();
@@ -47,6 +45,18 @@ void RegCommand()
                 }
             }
             output.success(str);
+            break;
+        }
+
+        case do_hash("unregister"): {
+            auto PAPIName = results["PAPIName"].get<std::string>();
+            auto out = PlaceholderAPI::unRegisterPlaceholder(PAPIName);
+            if (out) {
+                output.success("Success");
+            }
+            else {
+                output.success("Fail");
+            }
             break;
         }
         default:

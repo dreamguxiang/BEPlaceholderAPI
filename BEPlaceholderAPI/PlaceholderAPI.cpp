@@ -118,17 +118,21 @@ void  PlaceholderAPI::registerPlayerPlaceholder(string name, std::function<strin
 }
 
 bool PlaceholderAPI::unRegisterPlaceholder(string name) {
-	if (GlobalPAPI.find(name) != GlobalPAPI.end()) {
-		GlobalPAPI.erase(name);
+	string a1 = Helper::checkPAPIName(name);
+	bool isremove = false;
+	a1 = Helper::checkPAPIName(a1);
+	if (GlobalPAPI.find(a1) != GlobalPAPI.end()) {
+		GlobalPAPI.erase(a1);
 		return true;
 	}
 	else {
 		for (auto& i : GlobalPAPI) {
 			if (i.second.getPluginName() == name) {
-				GlobalPAPI.erase(i.first);
-				return true;
+				GlobalPAPI.erase(Helper::checkPAPIName(i.first));
+				isremove = true;
 			}
 		}
+		if(isremove) return true;		
 	}
 	return false;
 }
