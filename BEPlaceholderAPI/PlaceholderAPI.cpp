@@ -201,6 +201,7 @@ void PlaceholderAPI::translateString(string& a0,Player* sp) {
 	}
 }
 
+
 std::unordered_set<string> PlaceholderAPI::getPAPIList() {
 	std::unordered_set<string> list;
 	for (auto& i : GlobalPAPI) {
@@ -226,7 +227,7 @@ void updatePlaceholder() {
 		},20);
 }
 
-
+//---------------------------------------RemoteCall------------------------------------------
 namespace RemoteCall {
 	std::string GetValue(std::string const& from)
 	{

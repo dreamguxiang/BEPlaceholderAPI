@@ -4,6 +4,7 @@ const PAPIregisterPlayerPlaceholderAPI = ll.import("BEPlaceholderAPI","registerP
 const PAPIregisterServerPlaceholderAPI = ll.import("BEPlaceholderAPI","registerServerPlaceholder")
 const PAPIregisterStaticPlaceholderAPI = ll.import("BEPlaceholderAPI","registerStaticPlaceholder")
 const PAPItranslateStringAPI = ll.import("BEPlaceholderAPI","translateString")
+const PAPIunRegisterPlaceholderAPI = ll.import("BEPlaceholderAPI","unRegisterPlaceholder")
 
 Function.prototype.getName = function(){
 
@@ -40,6 +41,10 @@ class PAPI{
 
     static translateString(str,xuid){
         return PAPItranslateStringAPI(str,xuid)
+    }
+
+    static unRegisterPlaceholder(str){
+        return PAPIunRegisterPlaceholderAPI(str)
     }
 
 }

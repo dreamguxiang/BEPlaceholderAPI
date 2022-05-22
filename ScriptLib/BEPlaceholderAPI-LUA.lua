@@ -3,7 +3,8 @@ local  PAPIgetValueByPlayerAPI = ll.import("BEPlaceholderAPI","GetValueWithPlaye
 local  PAPIregisterPlayerPlaceholderAPI = ll.import("BEPlaceholderAPI","registerPlayerPlaceholder")
 local  PAPIregisterServerPlaceholderAPI = ll.import("BEPlaceholderAPI","registerServerPlaceholder")
 local  PAPIregisterStaticPlaceholderAPI = ll.import("BEPlaceholderAPI","registerStaticPlaceholder")
-local PAPItranslateStringAPI = ll.import("BEPlaceholderAPI","translateString")
+local  PAPItranslateStringAPI = ll.import("BEPlaceholderAPI","translateString")
+local  PAPIunRegisterPlaceholderAPI = ll.import("BEPlaceholderAPI","unRegisterPlaceholder")
 
 module = {}
 
@@ -32,6 +33,10 @@ end
 
 function module.translateString(str,xuid)
     return PAPItranslateStringAPI(str,xuid)
+end
+
+function module.unRegisterPlaceholder(str)
+    return PAPIunRegisterPlaceholderAPI(str)
 end
 
 return module
