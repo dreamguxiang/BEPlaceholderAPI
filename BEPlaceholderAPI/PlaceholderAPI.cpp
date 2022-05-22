@@ -222,64 +222,72 @@ namespace RemoteCall {
 
 	std::string registerPlayerPlaceholder(std::string const& PluginName, std::string const& FuncName, std::string const& PAPIName)
 	{
-		if (Helper::isParameters(PAPIName)) {
-			auto Call = RemoteCall::importAs<string(std::string const& arg, std::unordered_map<string, string>)>(PluginName, FuncName);
-			PlaceholderAPI::registerPlayerPlaceholder(PAPIName, [Call](Player* sp, std::unordered_map<string, string> map) {
-				return Call(sp->getXuid(),map);
-				}, PluginName);
+		if (RemoteCall::hasFunc(PluginName, FuncName)) {
+			if (Helper::isParameters(PAPIName)) {
+				auto Call = RemoteCall::importAs<string(std::string const& arg, std::unordered_map<string, string>)>(PluginName, FuncName);
+				PlaceholderAPI::registerPlayerPlaceholder(PAPIName, [Call](Player* sp, std::unordered_map<string, string> map) {
+					return Call(sp->getXuid(), map);
+					}, PluginName);
+			}
+			else {
+				auto Call = RemoteCall::importAs<string(std::string const& arg)>(PluginName, FuncName);
+				PlaceholderAPI::registerPlayerPlaceholder(PAPIName, [Call](Player* sp) {
+					return Call(sp->getXuid());
+					}, PluginName);
+			}
 		}
 		else {
-			auto Call = RemoteCall::importAs<string(std::string const& arg)>(PluginName, FuncName);
-			PlaceholderAPI::registerPlayerPlaceholder(PAPIName, [Call](Player* sp) {
-				return Call(sp->getXuid());
-				}, PluginName);
+			logger.error("Function no find({}:{})", PluginName, FuncName);
+			return "Function no find";
 		}
-		return "";
+		return "Register Success";
 	}
 	
-
-	//std::string registerServerPlaceholderByParameters(std::string const& PluginName, std::string const& FuncName, std::string const& PAPIName)
-	//{
-	//	auto Call = RemoteCall::importAs<string(std::unordered_map<string, string>)>(PluginName, FuncName);
-	//	PlaceholderAPI::registerServerPlaceholder(PAPIName, [Call](std::unordered_map<string, string> map) {
-	//		return Call(map);
-	//		}, PluginName);
-	//	return "";
-	//}
-
 	std::string registerServerPlaceholder(std::string const& PluginName, std::string const& FuncName, std::string const& PAPIName)
 	{
-		if (Helper::isParameters(PAPIName)) {
-			auto Call = RemoteCall::importAs<string(std::unordered_map<string, string>)>(PluginName, FuncName);
-			PlaceholderAPI::registerServerPlaceholder(PAPIName, [Call](std::unordered_map<string, string> map) {
-				return Call(map);
-				}, PluginName);
+		if (RemoteCall::hasFunc(PluginName, FuncName)) {
+			if (Helper::isParameters(PAPIName)) {
+				auto Call = RemoteCall::importAs<string(std::unordered_map<string, string>)>(PluginName, FuncName);
+				PlaceholderAPI::registerServerPlaceholder(PAPIName, [Call](std::unordered_map<string, string> map) {
+					return Call(map);
+					}, PluginName);
+			}
+			else {
+				auto Call = RemoteCall::importAs<string()>(PluginName, FuncName);
+				PlaceholderAPI::registerServerPlaceholder(PAPIName, [Call]() {
+					return Call();
+					}, PluginName);
+			}
 		}
 		else {
-			auto Call = RemoteCall::importAs<string()>(PluginName, FuncName);
-			PlaceholderAPI::registerServerPlaceholder(PAPIName, [Call]() {
-				return Call();
-				}, PluginName);
+			logger.error("Function no find({}:{})", PluginName, FuncName);
+			return "Function no find";
 		}
-		return "";
+		return "Register Success";
 	}
 	
 	std::string registerStaticPlaceholder(std::string const& PluginName, std::string const& FuncName, std::string const& PAPIName,int num)
 	{
-		if (Helper::isParameters(PAPIName)) {
-			auto Call = RemoteCall::importAs<string()>(PluginName, FuncName);
-			if (num == -1) {
-				PlaceholderAPI::registerStaticPlaceholder(PAPIName, [Call] {
-					return Call();
-					}, PluginName);
-			}
-			else {
-				PlaceholderAPI::registerStaticPlaceholder(PAPIName, num, [Call] {
-					return Call();
-					}, PluginName);
+		if (RemoteCall::hasFunc(PluginName, FuncName)) {
+			if (Helper::isParameters(PAPIName)) {
+				auto Call = RemoteCall::importAs<string()>(PluginName, FuncName);
+				if (num == -1) {
+					PlaceholderAPI::registerStaticPlaceholder(PAPIName, [Call] {
+						return Call();
+						}, PluginName);
+				}
+				else {
+					PlaceholderAPI::registerStaticPlaceholder(PAPIName, num, [Call] {
+						return Call();
+						}, PluginName);
+				}
 			}
 		}
-			return "";
+		else{
+			logger.error("Function no find({}:{})", PluginName, FuncName);
+			return "Function no find";
+		}
+		return "Register Success";
 	}
 
 	std::string translateString(std::string const& str, std::string const& xuid) 
