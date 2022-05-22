@@ -187,12 +187,12 @@ namespace Helper {
 	}
 	
 	inline bool isParameters(std::string str) {
-		std::regex reg("[<]([^>]+)[>]");
-		return std::regex_match(removeBrackets(str), reg);
+		std::regex reg("[<]([^<>]+)[>]");
+		return std::regex_search(removeBrackets(str), reg);
 
 	}
 	inline vector<string> getBrackets(std::string str) {
-		std::regex reg("[{]([^}]+)[}]");
+		std::regex reg("[{]([^{}]+)[}]");
 		vector<string> result;
 		for (std::sregex_iterator i = std::sregex_iterator(str.begin(), str.end(), reg); i != std::sregex_iterator(); ++i) {
 			result.push_back((*i).str());

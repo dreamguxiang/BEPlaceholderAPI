@@ -206,31 +206,45 @@ namespace RemoteCall {
 
 	std::string registerPlayerPlaceholder(std::string const& PluginName, std::string const& FuncName, std::string const& PAPIName)
 	{
-		auto Call = RemoteCall::importAs<string(std::string const& arg)>(PluginName, FuncName);
-		PlaceholderAPI::registerPlayerPlaceholder(PAPIName, [Call](Player* sp) {
-			return Call(sp->getXuid());
-			}, PluginName);
+		if (Helper::isParameters(PAPIName)) {
+			auto Call = RemoteCall::importAs<string(std::string const& arg, std::unordered_map<string, string>)>(PluginName, FuncName);
+			PlaceholderAPI::registerPlayerPlaceholder(PAPIName, [Call](Player* sp, std::unordered_map<string, string> map) {
+				return Call(sp->getXuid(),map);
+				}, PluginName);
+		}
+		else {
+			auto Call = RemoteCall::importAs<string(std::string const& arg)>(PluginName, FuncName);
+			PlaceholderAPI::registerPlayerPlaceholder(PAPIName, [Call](Player* sp) {
+				return Call(sp->getXuid());
+				}, PluginName);
+		}
 		return "";
 	}
 	
-	std::string registerServerPlaceholderByParameters(std::string const& PluginName, std::string const& FuncName, std::string const& PAPIName)
-	{
-		auto Call = RemoteCall::importAs<string(std::unordered_map<string, string>)>(PluginName, FuncName);
-		//auto& rawFunc = RemoteCall::importFunc(PluginName, FuncName);
-		//std::cout << rawFunc.target_type().name() << std::endl;
 
-		PlaceholderAPI::registerServerPlaceholder(PAPIName, [Call](std::unordered_map<string, string> map) {
-			return Call(map);
-			}, PluginName);
-		return "";
-	}
+	//std::string registerServerPlaceholderByParameters(std::string const& PluginName, std::string const& FuncName, std::string const& PAPIName)
+	//{
+	//	auto Call = RemoteCall::importAs<string(std::unordered_map<string, string>)>(PluginName, FuncName);
+	//	PlaceholderAPI::registerServerPlaceholder(PAPIName, [Call](std::unordered_map<string, string> map) {
+	//		return Call(map);
+	//		}, PluginName);
+	//	return "";
+	//}
 
 	std::string registerServerPlaceholder(std::string const& PluginName, std::string const& FuncName, std::string const& PAPIName)
 	{
-		auto Call = RemoteCall::importAs<string()>(PluginName, FuncName);
-		PlaceholderAPI::registerServerPlaceholder(PAPIName, [Call]() {
-			return Call();
-			}, PluginName);
+		if (Helper::isParameters(PAPIName)) {
+			auto Call = RemoteCall::importAs<string(std::unordered_map<string, string>)>(PluginName, FuncName);
+			PlaceholderAPI::registerServerPlaceholder(PAPIName, [Call](std::unordered_map<string, string> map) {
+				return Call(map);
+				}, PluginName);
+		}
+		else {
+			auto Call = RemoteCall::importAs<string()>(PluginName, FuncName);
+			PlaceholderAPI::registerServerPlaceholder(PAPIName, [Call]() {
+				return Call();
+				}, PluginName);
+		}
 		return "";
 	}
 	
@@ -258,7 +272,6 @@ void PAPIinit() {
 	
 	updatePlaceholder();
 	EXPORTAPI(RemoteCall::registerPlayerPlaceholder);
-	EXPORTAPI(RemoteCall::registerServerPlaceholderByParameters);
 	EXPORTAPI(RemoteCall::registerServerPlaceholder);
 	EXPORTAPI(RemoteCall::GetValue);
 	EXPORTAPI(RemoteCall::GetValueWithPlayer);
