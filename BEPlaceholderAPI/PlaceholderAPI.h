@@ -25,9 +25,11 @@ public:
 	static string getValue(string name);
 	static void translateString(string& a0, Player* sp = nullptr);
 
-	static void registerStaticPlaceholder(string name, string(*Func)(), string PluginName = "");
 	static void registerStaticPlaceholder(string name, string value, string PluginName = "");
-	static void registerStaticPlaceholder(string name, int UpdateInterval , string(*Func)(), string PluginName = "");
+	static void registerStaticPlaceholder(string name, string(*Func)(), string PluginName);
+	static void registerStaticPlaceholder(string name, std::function<string()> callback, string PluginName="");
+	static void registerStaticPlaceholder(string name, int UpdateInterval, string(*Func)(), string PluginName);
+	static void registerStaticPlaceholder(string name, int UpdateInterval, std::function<string()> callback, string PluginName = "");
 	
 	static void registerPlayerPlaceholder(string name, std::function<string(class Player*)> callback, string PluginName = "");
 	static void registerPlayerPlaceholder(string name, std::function<string(class Player*, std::unordered_map<string, string>)> callback, string PluginName = "");

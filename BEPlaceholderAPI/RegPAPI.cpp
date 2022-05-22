@@ -90,10 +90,6 @@ void regPlayerInit() {
 		else
 			return str;
 		});	
-
-	PlaceholderAPI::registerPlayerPlaceholder("player_is_op", [](Player* sp) {
-		return S(sp->isOP());
-		});
 	
 	PlaceholderAPI::registerPlayerPlaceholder("player_ip", [](Player* sp) {
 		return sp->getIP();
@@ -166,7 +162,7 @@ void regServerInit() {
 	PlaceholderAPI::registerServerPlaceholder("server_difficulty", []() {
 		return S(Global<PropertiesSettings>->getDifficulty());
 		});
-	PlaceholderAPI::registerServerPlaceholder("server_difficulty", []() {
+	PlaceholderAPI::registerServerPlaceholder("server_on_allowlist", []() {
 		return S(Global<PropertiesSettings>->useAllowList());
 		});
 	PlaceholderAPI::registerServerPlaceholder("server_port", []() {
@@ -192,9 +188,6 @@ void regServerInit() {
 		});
 	PlaceholderAPI::registerServerPlaceholder("server_has_whitelist", []() {
 		return S(Global<PropertiesSettings>->useAllowList());
-		});
-	PlaceholderAPI::registerServerPlaceholder("server_total_entities", []() {
-		return S(Level::getAllEntities().size());
 		});
 	PlaceholderAPI::registerServerPlaceholder("server_total_chunks", []() {
 		return "";
