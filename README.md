@@ -30,7 +30,7 @@ For each feature in this plugin, you can use the command "/papi" or revise the c
 ### 💻Download
 Please go to [Releases page](https://github.com/dreamguxiang/BEPlaceholderAPI/releases) to download the latest version.
 
-### 🎯 安装和使用
+### 🎯 Install & Usage
 
 This plugin is developed based on [LiteLoaderBDS](https://github.com/LiteLDev/LiteLoaderBDS), LL provides a powerful API system that greatly reduces development and maintenance costs, so to load BEPlaceholderAPI you need to install LiteLoaderBDS and drop it into its generated s Plugins folder in order to load and run correctly.
 
