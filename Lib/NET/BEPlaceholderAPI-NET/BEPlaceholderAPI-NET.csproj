@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Authors>DreamGuXiang</Authors>
+    <Copyright></Copyright>
+    <PackageProjectUrl>https://github.com/dreamguxiang/BEPlaceholderAPI</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/dreamguxiang/BEPlaceholderAPI</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <BaseOutputPath></BaseOutputPath>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="LiteLoader.NET">
+      <HintPath>..\SDK\LiteLoader.NET.dll</HintPath>
+      <CopyLocal>False</CopyLocal>
+    </Reference>
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy $(SolutionDir)\BEPlaceholderAPI-NET\bin\Release\net6.0\BEPlaceholderAPI-NET.dll ..\..\" />
+  </Target>
+
+</Project>
