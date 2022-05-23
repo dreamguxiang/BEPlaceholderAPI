@@ -74,7 +74,7 @@ jobs:
         working-directory: ${{env.GITHUB_WORKSPACE}}
         id: build2
         run: |
-          MSBuild.exe ${{env.NETSOLUTION_FILE_PATH}} /p:Configuration=Release /p:Platform="Any CPU"
+          MSBuild.exe ${{env.NETSOLUTION_FILE_PATH}} /p:Configuration=Release /p:Platform="Any CPU" -m
         shell: bash
 
       - name: copy dll and pdb files
