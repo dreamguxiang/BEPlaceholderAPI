@@ -12,3 +12,4 @@
 build/*
 /out/*
 Lib/NET/SDK/LiteLoader.NET.dll
+Lib/BEPlaceholderAPI-NET.dll

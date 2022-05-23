@@ -16,10 +16,10 @@ namespace BEPlaceholderAPI
 
         static public void registerserverplaceholder(Func<Dictionary<string, string>, string> func, string pluginname, string papiname)
         {
-            //RemoteCallAPI.ExportFunc(pluginname, func.Method.Name, (args) =>
-            //{
-            //    return func(args[0]);
-            //});
+            RemoteCallAPI.ExportFunc(pluginname, func.Method.Name, (args) =>
+            {
+                return func(args[0]);
+            });
             var funcs = RemoteCallAPI.ImportFunc("beplaceholderapi", "registerserverplaceholder");
             funcs(new() { pluginname, func.Method.Name, papiname });
         }
@@ -36,10 +36,10 @@ namespace BEPlaceholderAPI
 
         static public void registerPlayerPlaceholder(Func<MC.Player, Dictionary<string, string>, string> func, string PluginName, string PAPIName)
         {
-            //RemoteCallAPI.ExportFunc(PluginName, func.Method.Name, (args) =>
-            //{
-            //  //  return func(MC.Level.GetPlayer(args[0]),args[1]);
-            //});
+            RemoteCallAPI.ExportFunc(PluginName, func.Method.Name, (args) =>
+            {
+                return func(MC.Level.GetPlayer(args[0]),args[1]);
+            });
             var funcs = RemoteCallAPI.ImportFunc("BEPlaceholderAPI", "registerPlayerPlaceholder");
             funcs(new() { PluginName, func.Method.Name, PAPIName });
         }

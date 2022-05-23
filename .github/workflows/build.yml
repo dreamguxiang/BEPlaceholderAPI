@@ -5,6 +5,7 @@ on: [ push ]
 env:
   PLUGIN_NAME: BEPlaceholderAPI
   SOLUTION_FILE_PATH: ./BEPlaceholderAPI.sln
+  NETSOLUTION_FILE_PATH: ./Lib/NET/BEPlaceholderAPI-NET.sln
   VERSION_FILE_PATH: BEPlaceholderAPI/Version.h
   BUILD_CONFIGURATION: Release
   Platform: X64
@@ -69,13 +70,21 @@ jobs:
         run: |
           MSBuild.exe ${{env.SOLUTION_FILE_PATH}} -property:Configuration=${{env.BUILD_CONFIGURATION}}
         shell: bash
-      
+      - name: Build NET LIB
+        working-directory: ${{env.GITHUB_WORKSPACE}}
+        id: build
+        run: |
+          MSBuild.exe ${{env.NETSOLUTION_FILE_PATH}} -property:Configuration=${{env.BUILD_CONFIGURATION}}
+        shell: bash
+
       - name: copy dll and pdb files
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
           mkdir output/
           mkdir output/${{env.PLUGIN_NAME}}/
           cp -f x64/Release/*.dll output/${{env.PLUGIN_NAME}}/
+          mkdir output/${{env.PLUGIN_NAME}}/lib
+          cp -f Lib/*.* output/${{env.PLUGIN_NAME}}/Lib
           mkdir output/PDB/
           cp -f x64/Release/*.pdb output/PDB/
           # mkdir output/${{env.PLUGIN_NAME}}/${{env.PLUGIN_NAME}}/
