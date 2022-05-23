@@ -66,13 +66,13 @@ jobs:
 
       - name: Build
         working-directory: ${{env.GITHUB_WORKSPACE}}
-        id: build
+        id: build1
         run: |
           MSBuild.exe ${{env.SOLUTION_FILE_PATH}} -property:Configuration=${{env.BUILD_CONFIGURATION}}
         shell: bash
       - name: Build NET LIB
         working-directory: ${{env.GITHUB_WORKSPACE}}
-        id: build
+        id: build2
         run: |
           MSBuild.exe ${{env.NETSOLUTION_FILE_PATH}} -property:Configuration=${{env.BUILD_CONFIGURATION}}
         shell: bash
