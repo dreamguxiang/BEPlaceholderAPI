@@ -92,6 +92,7 @@ copy /Y "$(TargetPath)" "$(LocalDebuggerWorkingDirectory)\plugins\"
     <ClInclude Include="Version.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AutoUpgrade.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="PlaceholderAPI.cpp">

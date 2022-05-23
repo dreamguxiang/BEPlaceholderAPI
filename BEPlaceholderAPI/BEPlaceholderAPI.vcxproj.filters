@@ -22,6 +22,9 @@
     <ClCompile Include="SignBlock.cpp">
       <Filter>SourceFile</Filter>
     </ClCompile>
+    <ClCompile Include="AutoUpgrade.cpp">
+      <Filter>SourceFile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Helper.h">

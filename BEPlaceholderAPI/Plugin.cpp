@@ -85,11 +85,25 @@ void loadCfg() {
     }
 }
 
+void fixUpLibDir() {
+    WCHAR* buffer = new (std::nothrow) WCHAR[1024];
+    if (!buffer)
+        return;
+
+    DWORD length = GetEnvironmentVariableW(TEXT("PATH"), buffer, 1024);
+    std::wstring PATH(buffer, length);
+    length = GetCurrentDirectoryW(1024, buffer);
+    std::wstring CWD(buffer, length);
+
+    SetEnvironmentVariableW(TEXT("PATH"), (CWD + L"\\plugins\\BEPlaceholderAPI\\lib;" + PATH).c_str());
+    delete[] buffer;
+}
 
 void PAPIinit();
 void RegCommand();
 void PluginInit()
 {
+    fixUpLibDir();
     loadCfg();
     CheckProtocolVersion();
     PAPIinit();
