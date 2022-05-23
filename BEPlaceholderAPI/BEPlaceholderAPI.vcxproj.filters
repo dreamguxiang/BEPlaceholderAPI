@@ -48,6 +48,9 @@
     <ClInclude Include="SignBlock.h">
       <Filter>Head</Filter>
     </ClInclude>
+    <ClInclude Include="Lang.hpp">
+      <Filter>Head</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Head">

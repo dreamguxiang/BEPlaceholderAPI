@@ -5,6 +5,7 @@
 #include <Pdh.h>
 #include <PdhMsg.h>
 #include <psapi.h>
+#include "PlaceholderAPI.h"
 
 #pragma comment(lib,"psapi.lib")
 typedef std::chrono::high_resolution_clock timer_clock;
@@ -144,6 +145,37 @@ namespace Helper {
 		}
 		return format;
 	}
+
+	inline string removeBrackets(string a1) {
+		//a1.erase(std::remove(a1.begin(), a1.end(), '%'), a1.end());
+		a1.erase(a1.find_last_not_of("%") + 1);
+		return a1;
+	}
+
+	inline string removeAllBrackets(string a1) {
+		a1.erase(std::remove(a1.begin(), a1.end(), '%'), a1.end());
+		return a1;
+	}
+
+	inline vector<string> getPAPIPlugins() {
+		vector<string> v;
+		auto sets = PlaceholderAPI::getPAPIPluginsList();
+		v.assign(sets.begin(), sets.end());
+		return v;
+	}
+
+	inline vector<string> getPAPIInfoList() {
+		vector<string> out;
+		auto v = getPAPIPlugins();
+		
+		auto list = PlaceholderAPI::getPAPIInfoList();
+		for (auto& i : list) {
+			v.push_back(removeAllBrackets(i.mName));
+		}
+		return v;
+	}
+
+	
 	
 	inline string checkPAPIName(string x) {
 		if (x.find('%') != x.npos && x.find('%') != x.npos) 
@@ -178,12 +210,6 @@ namespace Helper {
 			}
 		}
 		return result;
-	}
-
-	inline string removeBrackets(string a1) {
-		//a1.erase(std::remove(a1.begin(), a1.end(), '%'), a1.end());
-		a1.erase(a1.find_last_not_of("%") + 1);
-		return a1;
 	}
 	
 	inline bool isParameters(std::string str) {

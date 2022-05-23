@@ -1,6 +1,6 @@
 #include "Global.h"
 #include <ServerAPI.h>
-
+#include "Lang.hpp"
 Logger logger(PLUGIN_NAME);
 
 inline void CheckProtocolVersion() {
@@ -17,8 +17,7 @@ inline void CheckProtocolVersion() {
 void loadCfg() {
     //config
     if (!std::filesystem::exists("plugins/BEPlaceholderAPI"))
-        std::filesystem::create_directories("plugins/BEPlaceholderAPI");
-    //tr	
+        std::filesystem::create_directories("plugins/BEPlaceholderAPI");	
     if (std::filesystem::exists(JsonFile)) {
         try {
             Settings::LoadConfigFromJson(JsonFile);
@@ -37,6 +36,52 @@ void loadCfg() {
     else {
         logger.info("Config with default values created");
         Settings::WriteDefaultConfig(JsonFile);
+    }
+
+    //-----CN------
+    if (!std::filesystem::exists(LangParh))
+        std::filesystem::create_directories(LangParh);
+    if (std::filesystem::exists("plugins/BEPlaceholderAPI/lang/zh_CN.json")) {
+        try {
+            TRZH::LoadConfigFromJson("plugins/BEPlaceholderAPI/lang/zh_CN.json");
+        }
+        catch (std::exception& e) {
+            logger.error("Config File isInvalid, Err {}", e.what());
+            Sleep(1000 * 100);
+            exit(1);
+        }
+        catch (...) {
+            logger.error("Config File isInvalid");
+            Sleep(1000 * 100);
+            exit(1);
+        }
+    }
+    else {
+        logger.info("Config with default values created");
+        TRZH::WriteDefaultConfig("plugins/BEPlaceholderAPI/lang/zh_CN.json");
+    }
+	
+    //--------US----------
+    if (!std::filesystem::exists(LangParh))
+        std::filesystem::create_directories(LangParh);
+    if (std::filesystem::exists("plugins/BEPlaceholderAPI/lang/en_US.json")) {
+        try {
+            TRUS::LoadConfigFromJson("plugins/BEPlaceholderAPI/lang/en_US.json");
+        }
+        catch (std::exception& e) {
+            logger.error("Config File isInvalid, Err {}", e.what());
+            Sleep(1000 * 100);
+            exit(1);
+        }
+        catch (...) {
+            logger.error("Config File isInvalid");
+            Sleep(1000 * 100);
+            exit(1);
+        }
+    }
+    else {
+        logger.info("Config with default values created");
+        TRUS::WriteDefaultConfig("plugins/BEPlaceholderAPI/lang/en_US.json");
     }
 }
 

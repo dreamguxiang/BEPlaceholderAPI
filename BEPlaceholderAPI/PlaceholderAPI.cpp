@@ -206,7 +206,7 @@ void PlaceholderAPI::translateString(string& a0,Player* sp) {
 }
 
 
-std::unordered_set<string> PlaceholderAPI::getPAPIList() {
+std::unordered_set<string> PlaceholderAPI::getPAPIPluginsList() {
 	std::unordered_set<string> list;
 	for (auto& i : GlobalPAPI) {
 		list.insert(i.second.getPluginName());
@@ -342,7 +342,7 @@ void  RegPAPInit();
 void initSchedule();
 
 void PAPIinit() {
-	
+	Translation::load("plugins/BEPlaceholderAPI/lang/"+ Settings::LangCode +".json");
 	updatePlaceholder();
 	EXPORTAPI(RemoteCall::registerPlayerPlaceholder);
 	EXPORTAPI(RemoteCall::registerServerPlaceholder);

@@ -40,7 +40,7 @@ public:
 	static bool unRegisterPlaceholder(string name);
 	
 	static void Update(PlaceholderAPI a1);
-	static std::unordered_set<string> getPAPIList();
+	static std::unordered_set<string> getPAPIPluginsList();
 	static std::vector<PlaceholderAPI> getPAPIInfoList();
 	inline string getValue() {
 		return mValue;

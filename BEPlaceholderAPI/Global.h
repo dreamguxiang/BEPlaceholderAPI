@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 
 #include <iostream>
@@ -36,4 +36,6 @@
 extern Logger logger;
 #define S(x) std::to_string(x)
 #define JsonFile "plugins/BEPlaceholderAPI/config.json"
+#define LangParh "plugins/BEPlaceholderAPI/lang"
 #define VERSION LL::Version{PLUGIN_VERSION_MAJOR, PLUGIN_VERSION_MINOR, PLUGIN_VERSION_REVISION, PLUGIN_LLVERSION_STATUS}
+#define BEPAPI u8"§l§e[BEPlaceholderAPI]§r "
