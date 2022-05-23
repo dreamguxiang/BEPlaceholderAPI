@@ -11,6 +11,7 @@
     <RepositoryType>git</RepositoryType>
     <BaseOutputPath></BaseOutputPath>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
