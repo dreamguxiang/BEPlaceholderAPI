@@ -69,12 +69,6 @@ jobs:
         run: |
           MSBuild.exe ${{env.SOLUTION_FILE_PATH}} -property:Configuration=${{env.BUILD_CONFIGURATION}}
         shell: bash
-      - name: Build NET LIB
-        working-directory: ${{env.GITHUB_WORKSPACE}}
-        id: build2
-        run: |
-          MSBuild.exe "./Lib/NET/BEPlaceholderAPI-NET.sln" //p:Configuration=Release //p:Platform="Any CPU" -m
-        shell: bash
 
       - name: copy dll and pdb files
         working-directory: ${{env.GITHUB_WORKSPACE}}
