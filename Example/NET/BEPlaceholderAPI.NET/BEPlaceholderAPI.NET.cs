@@ -17,6 +17,9 @@ namespace PluginMain
         
         public static void OnPostInit()
         {
+            logger.warn.WriteLine("Plugin loaded");
+            logger.info.WriteLine("Info.");
+            
             LLAPI.RegisterPlugin("PluginName11", "Introduction", new(1, 0, 0));
             events();
         }

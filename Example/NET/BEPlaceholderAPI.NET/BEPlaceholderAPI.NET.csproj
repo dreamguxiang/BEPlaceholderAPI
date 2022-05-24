@@ -12,7 +12,7 @@
       <HintPath>..\..\..\Lib\BEPlaceholderAPI-NET.dll</HintPath>
     </Reference>
     <Reference Include="LiteLoader.NET">
-      <HintPath>..\SDK\LiteLoader.NET.dll</HintPath>
+      <HintPath>..\..\..\Lib\NET\SDK\LiteLoader.NET.dll</HintPath>
     </Reference>
   </ItemGroup>
 
