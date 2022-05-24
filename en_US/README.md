@@ -1,10 +1,9 @@
-#  BEPlaceholderAPI - PAPI Help Center
+# BEPlaceholderAPI - PAPI Help Center
 [![status](https://img.shields.io/github/workflow/status/dreamguxiang/BEPlaceholderAPI/Build%20BEPlaceholderAPI?style=for-the-badge)](https://github.com/dreamguxiang/BEPlaceholderAPI/actions)
 [
 ![Latest Tag](https://img.shields.io/github/v/tag/dreamguxiang/BEPlaceholderAPI?label=LATEST%20TAG&style=for-the-badge)
 ![GitHub Releases (by Asset)](https://img.shields.io/github/downloads/dreamguxiang/BEPlaceholderAPI/latest/total?style=for-the-badge)
 ](https://github.com/dreamguxiang/BEPlaceholderAPI/releases/latest)
-
 # BEPlaceholderAPI
 <img src="https://s1.328888.xyz/2022/05/22/dOkzd.png">
 

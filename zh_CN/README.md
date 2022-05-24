@@ -5,42 +5,55 @@
 ![GitHub Releases (by Asset)](https://img.shields.io/github/downloads/dreamguxiang/BEPlaceholderAPI/latest/total?style=for-the-badge)
 ](https://github.com/dreamguxiang/BEPlaceholderAPI/releases/latest)
 
-## 🎨 项目简介
-`LiteLoaderBDS`是一个基岩版官方服务端`Bedrock Dedicated Server`（以下简称 **BDS**）插件框架，提供强大的跨语言脚本插件支持能力和稳定的开发API支持。
+# BEPlaceholderAPI
+<img src="https://s1.328888.xyz/2022/05/22/dOkzd.png">
 
-👉[点击此处](https://github.com/LiteLDev/LiteLoaderBDS/blob/main/README_zh-cn.md)👈 查看对LL项目更详细的解释说明  
-<br>
+##### [English](/en_US/) | 简体中文
+`BEPlaceholderAPI`是一个给游戏或插件添加公共变量的插件，给插件开发者和服主提供非常丰富而且实用的功能。
 
-## 🔨 加载器安装 与 使用指南
+## 对于服主
+功能包括但不限于：
+- 动态告示牌变量
+![](https://s1.328888.xyz/2022/05/22/dObe3.gif)
+- 插件公共变量
+> 例如:侧边栏 HeadShow等等
+- 聊天公共变量
+![](https://s1.328888.xyz/2022/05/22/dOKvy.png)
 
-这里介绍了如何为BDS服务端安装`LiteLoaderBDS`加载器，如何修改配置，以及如何安装 LL 插件  
+*以上功能可以选择关闭*
 
-👉[点击此处](zh_CN/Usage/)👈 查看 `LiteLoaderBDS` 安装和使用文档
-<br>
+## 对于插件开发者
+- <details><summary>脚本插件快速接入API
+    </summary>
+    <span>Js语言API</span>
+    <img src="https://s1.328888.xyz/2022/05/22/dO3IW.png">
+    <span>Lua语言API</span>
+    <img src="https://s1.328888.xyz/2022/05/22/dOn1Q.png">
+    </details>
 
-## ❓常见问题
 
-安装和使用 `LiteLoaderBDS` 过程中遇到问题？这里有一些常见问题的解决方法
+### 💻下载
 
-👉[点击此处](zh_CN/QA/)👈 查看常见问题与解决方法
-<br>
+你可以到[Releases页面](https://github.com/dreamguxiang/BEPlaceholderAPI/releases) 来下载最新的版本。
 
-## ⛳ C++ 插件 - 开发指南 与 API文档
+### 🎯 安装和使用
 
-使用 `C++`, `Golang` 等编译型语言语言开发 LL 插件，拥有海量API，自由实现你的任意想法
+本插件基于[LiteLoaderBDS](https://github.com/LiteLDev/LiteLoaderBDS)开发，LL提供的强大API系统，大大降低了开发成本与维护成本，因此加载BEPlaceholderAPI需要安装LiteLoaderBDS并丢入其生成的Plugins文件夹，才能正确加载运行。
 
-在做了(新建文件夹)
-<br>
+### 🏆 致谢
 
-## 🎯 脚本插件 - 开发指南 与 API文档
-使用 `JavaScript`, `Lua` 等脚本语言开发 LL 插件，容易上手，功能强大
+- 感谢[dreamguxiang](https://github.com/dreamguxiang)的主要开发。
+- 感谢[HuoHuas001](https://github.com/HuoHuas001)的帮助与贡献。
+- 感谢[LiteLDev](https://github.com/LiteLDev)开发组成员的帮助与提议。
 
-👉[点击此处](zh_CN/Development/)👈 查看 脚本插件开发文档 
-<br>
+### 📞 联系
 
-## 🎬 参与 LiteLoaderBDS 项目开发
+QQ群：
 
-我们欢迎你对`LiteLoaderBDS`做出自己的贡献！  
+### ⚠️ 警告
 
-👉[点击此处](zh_CN/Maintenance/)👈查看 LL项目维护与支持文档
-<br>
+未经允许，禁止转载！擅自整合转载可能会使本插件停更！
+
+#### 额外限制和例外
+
+在没有授权允许的情况下，你不能将其分发、传播、整合！
