@@ -1,4 +1,5 @@
+- [C++ plugin development](en_US/Develop/CPP.md)
 - [Js plugin development](en_US/Develop/JS.md)
 - [Lua plugin development](en_US/Develop/LUA.md)
-- [.Net plugin development](en_US/Develop/NET.md)
-- [Return to previous page](en_US/)
+- [.net plugin development](en_US/Develop/NET.md)
+- [return to previous page](en_US/)
