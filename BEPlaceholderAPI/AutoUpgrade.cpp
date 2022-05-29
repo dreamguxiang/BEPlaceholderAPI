@@ -14,7 +14,7 @@ json getVersion() {
 	if (auto res = cli.Get("/repos/dreamguxiang/BEPlaceholderAPI/releases/latest")) {
 		//·ÃÎÊ³É¹¦
 		if (res->status == 200) {
-			json j = res->body;
+			json j = json::parse(res->body);
 			json sj;
 			if (j.find("tag_name") != j.end() && j.find("name") != j.end() && j.find("body") != j.end()) {
 				sj["tag_name"] = j["tag_name"];
@@ -77,10 +77,13 @@ void checkVersion() {
 		string body = versionJson["body"].get<string>();
 		if ("v" + nowVersion != tagName) {
 			logger.warn(
-				"A new version update has been detected. The updated content is as follows\nName:{}\nBody:{}\nTagName:{}",
-				versionJson["name"].get<string>(),
-				ReplaceStr(body,"\\n","\n"),
-				tagName);
+				"A new version update has been detected. The updated content is as follows");
+			logger.warn("Name:{}", versionJson["name"].get<string>());
+			logger.warn("Body:{}", ReplaceStr(body, "\\n", "\n"));
+			logger.warn("TagName:{}", tagName);
+		}
+		else {
+			logger.info("Your version is the latest version");
 		}
 		
 	}
