@@ -5,6 +5,9 @@
 #pragma comment(lib, "../SDK/Lib/bedrock_server_var.lib")
 #pragma comment(lib, "../SDK/Lib/LiteLoader.lib")
 #pragma comment(lib, "../SDK/Lib/SymDBHelper.lib")
+//libssl
+#pragma comment(lib, "../ThirdParty/Libs/libssl.lib")
+#pragma comment(lib, "../ThirdParty/Libs/libcrypto.lib")
 BOOL APIENTRY DllMain( HMODULE hModule,
                        DWORD  ul_reason_for_call,
                        LPVOID lpReserved

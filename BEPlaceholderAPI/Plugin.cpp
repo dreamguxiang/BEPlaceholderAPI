@@ -3,6 +3,16 @@
 #include "Lang.hpp"
 Logger logger(PLUGIN_NAME);
 
+//×Ö·û»­
+string pic = \
+"               _____          _____  _____\n"\
+"              |  __ \\  /\\    |  __ \\|_   _|\n" \
+"              | |__) |/  \\   | |__) | | |\n" \
+"              |  ___// /\\ \\  |  ___/  | |\n" \
+"              | |   / ____ \\ | |     _| |_\n" \
+"              |_|  /_/    \\_\\|_|    |_____|\n\n"\
+"   --------  \033[38;5;221mBEPlaceholderAPI \033[38;5;218mVersion\033[38;5;75m:\033[38;5;196m";
+
 inline void CheckProtocolVersion() {
     auto currentProtocol = LL::getServerProtocolVersion();
     if (TARGET_BDS_PROTOCOL_VERSION != currentProtocol)
@@ -101,6 +111,7 @@ void fixUpLibDir() {
 
 void PAPIinit();
 void RegCommand();
+void checkVersion();
 void PluginInit()
 {
     fixUpLibDir();
@@ -109,4 +120,9 @@ void PluginInit()
     PAPIinit();
     RegCommand();
     CheckProtocolVersion();
+    checkVersion();
+    std::cout << pic << PLUGIN_VERSION_MAJOR << '.' << PLUGIN_VERSION_MINOR << '.' << PLUGIN_VERSION_REVISION << "\033[0m  --------\n\n";
+    logger.info("Loaded.");
 }
+
+
