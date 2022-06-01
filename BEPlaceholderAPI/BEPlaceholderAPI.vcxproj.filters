@@ -28,42 +28,42 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Helper.h">
-      <Filter>Head</Filter>
+      <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="Global.h">
-      <Filter>Head</Filter>
+      <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="framework.h">
-      <Filter>Head</Filter>
+      <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="PlaceholderAPI.h">
-      <Filter>Head</Filter>
+      <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Resource</Filter>
     </ClInclude>
     <ClInclude Include="Version.h">
-      <Filter>Head</Filter>
+      <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="Setting.h">
-      <Filter>Head</Filter>
+      <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="SignBlock.h">
-      <Filter>Head</Filter>
+      <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="Lang.hpp">
-      <Filter>Head</Filter>
+      <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Head">
-      <UniqueIdentifier>{097df22b-3e80-458f-9bb6-2d04ca24e158}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource">
       <UniqueIdentifier>{34efaa7d-78e3-4e4d-a44f-ee99f5ac3634}</UniqueIdentifier>
     </Filter>
     <Filter Include="SourceFile">
       <UniqueIdentifier>{c53ed8cb-272b-4be5-b52e-59f5db588e93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header">
+      <UniqueIdentifier>{097df22b-3e80-458f-9bb6-2d04ca24e158}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -9,10 +9,12 @@ std::set<Vec4> SignBlockActorMap;
 
 THook(void*, "?tick@BlockActor@@UEAAXAEAVBlockSource@@@Z",
 	BlockActor* _this, BlockSource* a2) {
-	auto type = _this->getType();
-	if (type == BlockActorType::Sign) {		
-		auto dim = SymCall("?getDimension@BlockSource@@UEAAAEAVDimension@@XZ", Dimension*, BlockSource*)(a2);
-		SignBlockActorMap.emplace(Vec4{ _this->getPosition().toVec3(),dim->getDimensionId()});
+	if (Settings::Sign::Enabled) {
+		auto type = _this->getType();
+		if (type == BlockActorType::Sign) {
+			auto dim = SymCall("?getDimension@BlockSource@@UEAAAEAVDimension@@XZ", Dimension*, BlockSource*)(a2);
+			SignBlockActorMap.emplace(Vec4{ _this->getPosition().toVec3(),dim->getDimensionId() });
+		}
 	}
 	return original(_this, a2);
 }

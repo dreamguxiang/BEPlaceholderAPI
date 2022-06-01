@@ -7,7 +7,6 @@ std::unordered_map<string, PlaceholderAPI>  GlobalPAPI;
 std::unordered_map<string, PlaceholderAPI>  updatePlaceholders;
 #define EXPORTAPI(T) RemoteCall::exportAs(PLUGIN_NAME, Helper::ReplaceStr(#T,"RemoteCall::","") , T);
 
-
 PlaceholderAPI::PlaceholderAPI(string Name, int UpdateInterval, bool AutoUpdate, bool ProcessPlayer,bool ProcessParameters,string PluginName,std::function<string(class Player*)> callback, std::function<string(class Player*, std::unordered_map<string, string>)> CallbackWithParameters) {	
 	mName = "%" + Name + "%";
 	mUpdateInterval = UpdateInterval;
@@ -45,8 +44,6 @@ void PlaceholderAPI::registerPlaceholder(PlaceholderAPI a1) {
 		updatePlaceholders.emplace(std::pair{ a1.mName,a1 });
 	}
 }
-
-
 
 ////---------------------------------------Static------------------------------------------
 
@@ -325,17 +322,17 @@ namespace RemoteCall {
 
 void EventInit() {
 
-	if (Settings::Chat::Enabled) {
-		Event::PlayerChatEvent::subscribe_ref([](Event::PlayerChatEvent& ev) {
+	Event::PlayerChatEvent::subscribe_ref([](Event::PlayerChatEvent& ev) {
+		if (Settings::Chat::Enabled) {
 			auto& str = ev.mMessage;
 			//if (Settings::Chat::CanUseBrackets) {
 			//	Helper::Backets2Percentage(str);
 			//}
 			PlaceholderAPI::translateString(str, ev.mPlayer);
 			ev.mMessage = str;
-			return true;
-			});
-	}
+		}
+		return true;
+		});
 }
 
 void  RegPAPInit();
