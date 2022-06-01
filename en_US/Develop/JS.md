@@ -1,7 +1,7 @@
 # 📮 JS plugin development
 
 ## Preparation
-# # # # import library
+#### import library
 ```JavaScript
 const PAPI = require('./lib/BEPlaceholderAPI-JS').PAPI;
 ```

@@ -1,7 +1,7 @@
 # 📮 JS plugin development
 
 ## Preparation
-# # # # import library
+#### import library
 ```Lua
 local PAPI = require("plugins.lib.BEPlaceholderAPI-LUA")
 ```
