@@ -3,16 +3,6 @@
 #include "Lang.hpp"
 Logger logger(PLUGIN_NAME);
 
-//×Ö·û»­
-string pic = \
-"               _____          _____  _____\n"\
-"              |  __ \\  /\\    |  __ \\|_   _|\n" \
-"              | |__) |/  \\   | |__) | | |\n" \
-"              |  ___// /\\ \\  |  ___/  | |\n" \
-"              | |   / ____ \\ | |     _| |_\n" \
-"              |_|  /_/    \\_\\|_|    |_____|\n\n"\
-"   --------  \033[38;5;221mBEPlaceholderAPI \033[38;5;218mVersion\033[38;5;75m:\033[38;5;196m";
-
 inline void CheckProtocolVersion() {
     auto currentProtocol = LL::getServerProtocolVersion();
     if (TARGET_BDS_PROTOCOL_VERSION != currentProtocol)
@@ -95,10 +85,8 @@ void loadCfg() {
     }
 }
 
-
 void PAPIinit();
 void RegCommand();
-void checkVersion();
 void PluginInit()
 {
     loadCfg();
@@ -106,8 +94,14 @@ void PluginInit()
     PAPIinit();
     RegCommand();
     CheckProtocolVersion();
-    checkVersion();
-    std::cout << pic << PLUGIN_VERSION_MAJOR << '.' << PLUGIN_VERSION_MINOR << '.' << PLUGIN_VERSION_REVISION << "\033[0m  --------\n\n";
+    Logger().info(" _____          _____  _____");
+    Logger().info("|  __ \\  /\\    |  __ \\|_   _|");
+    Logger().info("| |__) |/  \\   | |__) | | |    \033[38;5;221mVersion:{}", PLUGIN_VERSION_MAJOR + '.' + PLUGIN_VERSION_MINOR + '.' + PLUGIN_VERSION_REVISION);
+    Logger().info("|  ___// /\\ \\  |  ___/  | |    \033[38;5;218mGithub:{}", "https://github.com/LiteLDev/BEPlaceholderAPI" );
+    Logger().info("| |   / ____ \\ | |     _| |_");
+    Logger().info("|_|  /_/    \\_\\|_|    |_____|");
+    Logger().info("");
+	
 }
 
 

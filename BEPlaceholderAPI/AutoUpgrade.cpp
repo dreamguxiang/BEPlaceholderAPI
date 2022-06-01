@@ -1,94 +1,60 @@
 #define CPPHTTPLIB_OPENSSL_SUPPORT
-#include <Heads/shttplib.h>
-#include "Helper.h"
+#include <LLAPI.h>
 #include <Nlohmann/json.hpp>
-#include <magic_enum/magic_enum.hpp>
+#include <ServerAPI.h>
+#include <SimpleIni/SimpleIni.h>
+#include <Utils/CryptHelper.h>
+#include <Utils/FileHelper.h>
+#include <Utils/NetworkHelper.h>
+#include <Utils/StringHelper.h>
+#include <chrono>
+#include <filesystem>
+#include <httplib/httplib.h>
+#include <process.h>
+#include <seh_exception/seh_exception.hpp>
+#include <string>
+#include <thread>
 #include "Global.h"
 
 using json = nlohmann::json;
 using namespace std;
 
-json getVersion() {
-	httplib::SSLClient cli("api.github.com",443);
-	string errorMessage = "Error";
-	if (auto res = cli.Get("/repos/dreamguxiang/BEPlaceholderAPI/releases/latest")) {
-		//访问成功
-		if (res->status == 200) {
-			json j = json::parse(res->body);
-			json sj;
-			if (j.find("tag_name") != j.end() && j.find("name") != j.end() && j.find("body") != j.end()) {
-				sj["tag_name"] = j["tag_name"];
-				sj["name"] = j["name"];
-				sj["body"] = j["body"];
-				sj["code"] = 0;
-				sj["message"] = "success.";
-				return sj;
-			}
-			else {
-				if (j.find("message") == j.end()) {
-					errorMessage = "Unkown error.";
-				}
-				else {
-					errorMessage = j["message"].get<string>();
-				}
-				
-			}
-			
-		}
-		else {
-			errorMessage = "Access failed. HTTP error code:" + to_string(res->status);
-		}
-	}
-	else {
-		errorMessage = "The request is error in "+string(magic_enum::enum_name(res.error()));
-	}
-	json j;
-	j["message"] = errorMessage;
-	j["code"] = 1;
-	return j;
+void checkUpdate() {
+    std::thread t([] {
+        try {
+            string infoUrl = "https://api.minebbs.com/api/openapi/v1/resources/4181/updates?page=1";
+            string info;
+            int status = -1;
+            if (!HttpGetSync(infoUrl, &status, &info, 12000) || status != 200) {
+                logger.info("Unable to check for updates. Download failed! Error Code: {}", status);
+                return;
+            }
+            nlohmann::json data1 = nlohmann::json::parse(info, nullptr, true, true);
+            if (data1.find("data") != data1.end()) {
+                nlohmann::json data2 = data1["data"];
+                LL::Version verRemote = LL::Version::parse(data2[0]["title"].get<string>());
+                LL::Version verLocal = VERSION;
+                if (verRemote > verLocal) {
+                    logger.info("New version available: {}\n-->https://www.minebbs.com/resources/4181/\n-->https://github.com/LiteLDev/BEPlaceholderAPI/releases", verRemote.toString());
+                }
+                else {
+                    logger.info("No new version available.");
+                }
+            }
+        }
+        catch (nlohmann::json::exception& e) {
+            logger.info("An error occurred while parsing the update configuration, {}", e.what());
+
+        }
+        catch (const seh_exception& e) {
+            logger.info("SEH Uncaught Exception Detected!\n{}", e.what());
+            logger.info("In Auto Update system");
+
+        }
+        catch (...) {
+            logger.info("An error was caught during the update process.");
+
+        }
+        });
+    t.detach();
 }
-
-
-vector<string> m_split(const string& str, const string& delim) {
-	vector<string> res;
-	if ("" == str) return res;
-	//先将要切割的字符串从string类型转换为char*类型
-	char* strs = new char[str.length() + 1]; //不要忘了
-	strcpy(strs, str.c_str());
-
-	char* d = new char[delim.length() + 1];
-	strcpy(d, delim.c_str());
-
-	char* p = strtok(strs, d);
-	while (p) {
-		string s = p; //分割得到的字符串转换为string类型
-		res.push_back(s); //存入结果数组
-		p = strtok(NULL, d);
-	}
-
-	return res;
-}
-
-void checkVersion() {
-	json versionJson = getVersion();
-	if (versionJson["code"] == 0) {
-		string nowVersion = to_string(PLUGIN_VERSION_MAJOR) + "." + to_string(PLUGIN_VERSION_MINOR) + "." + to_string(PLUGIN_VERSION_REVISION);
-		string tagName = versionJson["tag_name"].get<string>();
-		string body = versionJson["body"].get<string>();
-		if ("v" + nowVersion != tagName) {
-			logger.warn(
-				"A new version update has been detected. The updated content is as follows");
-			logger.warn("Name:{}", versionJson["name"].get<string>());
-			logger.warn("Body:{}", ReplaceStr(body, "\\n", "\n"));
-			logger.warn("TagName:{}", tagName);
-		}
-		else {
-			logger.info("Your version is the latest version");
-		}
-		
-	}
-	else {
-		logger.error(versionJson["message"].get<string>());
-	}
-}
-

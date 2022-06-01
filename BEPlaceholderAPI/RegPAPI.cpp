@@ -300,9 +300,11 @@ void testMCAPI()
 	TestLogTime(translateString2);
 	TestLogTime(translateString3);
 };
+
+void checkUpdate();
 void ListenEvent() {
 	Event::ServerStartedEvent::subscribe_ref([](Event::ServerStartedEvent& ev) {
-		//testMCAPI();
+		checkUpdate();
 		startTime = std::time(0);
 		return true;
 		});
