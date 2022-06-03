@@ -70,18 +70,16 @@ jobs:
       shell: bash
     
 
+
     - name: copy dll and pdb files
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: |
-          mkdir output/
-          mkdir output/${{env.PLUGIN_NAME}}/
-          cp -f x64/Release/*.dll output/${{env.PLUGIN_NAME}}/
-          mkdir output/${{env.PLUGIN_NAME}}/lib
-          cp -f Lib/*.* output/${{env.PLUGIN_NAME}}/Lib
-          mkdir output/PDB/
-          cp -f x64/Release/*.pdb output/PDB/
-          # mkdir output/${{env.PLUGIN_NAME}}/${{env.PLUGIN_NAME}}/
-          # cp -r Data/* output/${{env.PLUGIN_NAME}}/${{env.PLUGIN_NAME}}/
+        mkdir output
+        mkdir output/plugins
+        cp -f x64/Release/*.dll output/plugins
+        mkdir output/plugins/lib/
+        cp -f x64/Release/*.pdb output/plugins/lib     
+        cp -f Lib/*.* output/plugins/Lib
       shell: bash
     
     - name: upload files
