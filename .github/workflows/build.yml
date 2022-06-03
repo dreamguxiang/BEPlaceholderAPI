@@ -109,4 +109,4 @@ jobs:
         # body_path: ${{ github.workspace }}/CHANGELOG.txt
         files: ${{ github.workspace }}\output\BEPlaceholderAPI-${{ steps.rel.outputs.tag }}.zip
       env:
-          GITHUB_REPOSITORY: dreamguxiang/BEPlaceholderAPI 
+          GITHUB_REPOSITORY: LiteLDev/BEPlaceholderAPI 
