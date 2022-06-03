@@ -96,7 +96,7 @@ void PluginInit()
     CheckProtocolVersion();
     Logger().info(" _____          _____  _____");
     Logger().info("|  __ \\  /\\    |  __ \\|_   _|");
-    Logger().info("| |__) |/  \\   | |__) | | |    \033[38;5;221mVersion:{}", PLUGIN_VERSION_MAJOR + '.' + PLUGIN_VERSION_MINOR + '.' + PLUGIN_VERSION_REVISION);
+    Logger().info("| |__) |/  \\   | |__) | | |    \033[38;5;221mVersion:{}", PLUGIN_VERSION_STRING);
     Logger().info("|  ___// /\\ \\  |  ___/  | |    \033[38;5;218mGithub:{}", "https://github.com/LiteLDev/BEPlaceholderAPI" );
     Logger().info("| |   / ____ \\ | |     _| |_");
     Logger().info("|_|  /_/    \\_\\|_|    |_____|");
