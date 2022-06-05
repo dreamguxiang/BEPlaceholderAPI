@@ -4,7 +4,7 @@
 #include <ScheduleAPI.h>
 #include "SignBlock.h"
 
-std::unordered_map<string,Vec4> SignBlockActorMap;
+std::set<Vec4> SignBlockActorMap;
 
 
 THook(void*, "?tick@BlockActor@@UEAAXAEAVBlockSource@@@Z",
@@ -13,7 +13,7 @@ THook(void*, "?tick@BlockActor@@UEAAXAEAVBlockSource@@@Z",
 		auto type = _this->getType();
 		if (type == BlockActorType::Sign) {
 			auto dim = SymCall("?getDimension@BlockSource@@UEAAAEAVDimension@@XZ", Dimension*, BlockSource*)(a2);
-			SignBlockActorMap.emplace(Vec4{ _this->getPosition().toVec3(),dim->getDimensionId() }.toStr(), Vec4{_this->getPosition().toVec3(),dim->getDimensionId()});
+			SignBlockActorMap.emplace(Vec4{_this->getPosition().toVec3(),dim->getDimensionId()});
 		}
 	}
 	return original(_this, a2);
@@ -23,9 +23,10 @@ THook(void*, "?tick@BlockActor@@UEAAXAEAVBlockSource@@@Z",
 #include <MC/BinaryStream.hpp>
 #include <SendPacketAPI.h>
 void UpdateAllSignBlock() {
+	std::cout << SignBlockActorMap.size() << std::endl;
 	for (auto& i : SignBlockActorMap) {
-		auto bs = Level::getBlockSource(i.second.dimid);
-		auto pos = i.second.vc.toBlockPos();
+		auto bs = Level::getBlockSource(i.dimid);
+		auto pos = i.vc.toBlockPos();
 		auto ba = bs->getBlockEntity(pos);
 		if (ba) {
 			SignBlockActor* BlockEntity = (SignBlockActor*)ba;
@@ -60,6 +61,7 @@ void initSchedule() {
 	//20Tick自动更新
 	Schedule::repeat([] {
 		UpdateAllSignBlock();
+		SignBlockActorMap.clear();
 	}, 20);
 }
 

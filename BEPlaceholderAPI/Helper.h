@@ -42,6 +42,8 @@ struct Vec4 {
 		wp->teleport(vc, dimid);
 	}
 
+	Vec4() {}
+	
 	Vec4(ServerPlayer* wp) {
 		vc = wp->getPosition();
 		dimid = wp->getDimensionId();
@@ -54,9 +56,22 @@ struct Vec4 {
 		dimid = vc4.dimid;
 	}
 	bool operator<(const Vec4& s) const {
-		return true;
+		if (vc.x < s.vc.x) return true;
+		if (s.vc.x < vc.x) return false;
+		if (vc.y < s.vc.y) return true;
+		if (s.vc.y < vc.y) return false;
+		if (vc.z < s.vc.z) return true;
+		if (s.vc.z < vc.z) return false;
+		if (dimid < s.dimid) return true;
+		if (s.dimid < dimid) return false;
+		return false;
 	}
-	Vec4() {}
+	bool operator==(const Vec4& s) const {
+		return vc.x == s.vc.x && vc.y == s.vc.y && vc.z == s.vc.z && dimid == s.dimid;
+	}
+	bool operator!=(const Vec4& s) const {
+		return vc.x != s.vc.x || vc.y != s.vc.y || vc.z != s.vc.z || dimid != s.dimid;
+	}
 };
 
 
