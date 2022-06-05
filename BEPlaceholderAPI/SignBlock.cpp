@@ -23,7 +23,6 @@ THook(void*, "?tick@BlockActor@@UEAAXAEAVBlockSource@@@Z",
 #include <MC/BinaryStream.hpp>
 #include <SendPacketAPI.h>
 void UpdateAllSignBlock() {
-	std::cout << SignBlockActorMap.size() << std::endl;
 	for (auto& i : SignBlockActorMap) {
 		auto bs = Level::getBlockSource(i.dimid);
 		auto pos = i.vc.toBlockPos();
