@@ -17,7 +17,6 @@ typedef std::chrono::high_resolution_clock timer_clock;
             .count();
 
 
-
 class ChunkPos2 {
 	int       x, z;
 public:
