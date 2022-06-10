@@ -236,7 +236,7 @@ namespace RemoteCall {
 	}
 	std::string GetValueWithPlayer(std::string const& a1, std::string const& a2)
 	{
-		return	PlaceholderAPI::getValue(a1, Level::getPlayer(a2));
+		return	PlaceholderAPI::getValue(a1, Global<Level>->getPlayer(a2));
 	}
 
 	std::string registerPlayerPlaceholder(std::string const& PluginName, std::string const& FuncName, std::string const& PAPIName)
@@ -311,7 +311,7 @@ namespace RemoteCall {
 
 	std::string translateString(std::string const& str, std::string const& xuid) 
 	{
-		return	PlaceholderAPI::getValue(str, Level::getPlayer(xuid));
+		return	PlaceholderAPI::getValue(str, Global<Level>->getPlayer(xuid));
 	}
 
 	bool unRegisterPlaceholder(std::string const& str)

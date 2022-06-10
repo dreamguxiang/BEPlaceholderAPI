@@ -273,33 +273,7 @@ void translateString3()
 	PlaceholderAPI::translateString(str);
 }
 
-void testMCAPI()
-{
-	TestLogTime(getValue);
-	TestLogTime(translateString);
-	TestLogTime(translateString2);
-	TestLogTime(translateString3);
-	TestLogTime(getValue);
-	TestLogTime(translateString);
-	TestLogTime(translateString2);
-	TestLogTime(translateString3);
-	TestLogTime(getValue);
-	TestLogTime(translateString);
-	TestLogTime(translateString2);
-	TestLogTime(translateString3);
-	TestLogTime(getValue);
-	TestLogTime(translateString);
-	TestLogTime(translateString2);
-	TestLogTime(translateString3);
-	TestLogTime(getValue);
-	TestLogTime(translateString);
-	TestLogTime(translateString2);
-	TestLogTime(translateString3);	
-	TestLogTime(getValue);
-	TestLogTime(translateString);
-	TestLogTime(translateString2);
-	TestLogTime(translateString3);
-};
+
 
 void checkUpdate();
 void ListenEvent() {
