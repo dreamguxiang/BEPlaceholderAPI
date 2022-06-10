@@ -1,6 +1,7 @@
 # BEPlaceholderAPI
 <img src="https://s1.328888.xyz/2022/05/22/dOkzd.png">
 
+### 文档 [文档](https://papi.litetitle.com)
 ##### [English](README.md) | 简体中文
 `BEPlaceholderAPI`是一个给游戏或插件添加公共变量的插件，给插件开发者和服主提供非常丰富而且实用的功能。
 
