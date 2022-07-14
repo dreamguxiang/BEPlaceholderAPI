@@ -25,7 +25,7 @@ void checkUpdate() {
             string infoUrl = "https://api.minebbs.com/api/openapi/v1/resources/4181/updates?page=1";
             string info;
             int status = -1;
-            if (!HttpGetSync(infoUrl, &status, &info, 12000) || status != 200) {
+            if (!HttpGetSync(infoUrl, &status, &info, 60) || status != 200) {
                 logger.info("Unable to check for updates. Download failed! Error Code: {}", status);
                 return;
             }

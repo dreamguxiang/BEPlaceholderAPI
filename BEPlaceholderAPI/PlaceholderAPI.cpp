@@ -2,6 +2,7 @@
 #include "PlaceholderAPI.h"
 #include "ScheduleAPI.h"
 #include "Helper.h"
+#include "Lang.hpp"
 
 std::unordered_map<string, PlaceholderAPI>  GlobalPAPI;
 std::unordered_map<string, PlaceholderAPI>  updatePlaceholders;
@@ -339,7 +340,8 @@ void  RegPAPInit();
 void initSchedule();
 
 void PAPIinit() {
-	Translation::load("plugins/BEPlaceholderAPI/lang/"+ Settings::LangCode +".json");
+	
+	Translation::load("plugins/BEPlaceholderAPI/language.json", Settings::LangCode,defaultLangData);
 	updatePlaceholder();
 	EXPORTAPI(RemoteCall::registerPlayerPlaceholder);
 	EXPORTAPI(RemoteCall::registerServerPlaceholder);
