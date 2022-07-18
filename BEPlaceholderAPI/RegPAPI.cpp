@@ -148,6 +148,14 @@ void regServerInit() {
 		
 		return Helper::getTime("H:M:S");
 		});
+	PlaceholderAPI::registerServerPlaceholder("server_time_<format>", [](std::unordered_map<string, string> map) {
+		if (map.find("<format>") != map.end()) {
+			if ("<format>" != map["<format>"])
+				return Helper::getTime(map["<format>"]);
+		}
+
+		return Helper::getTime("H:M:S");
+		});
 	PlaceholderAPI::registerServerPlaceholder("server_online", []() {
 		return S(Global<ServerNetworkHandler>->getActiveAndInProgressPlayerCount(mce::UUID::EMPTY));
 		});
@@ -159,7 +167,7 @@ void regServerInit() {
 	PlaceholderAPI::registerServerPlaceholder("server_version", []() {
 		return LL::getBdsVersion();
 		});
-	PlaceholderAPI::registerServerPlaceholder("server_rotocol_version", []() {
+	PlaceholderAPI::registerServerPlaceholder("server_protocol_version", []() {
 		return S(LL::getServerProtocolVersion());
 		});
 	PlaceholderAPI::registerServerPlaceholder("server_total_entities", []() {
@@ -193,6 +201,14 @@ void regServerInit() {
 		}
 
 		return Helper::getTime("H:M:S",startTime);
+		});
+	PlaceholderAPI::registerServerPlaceholder("server_start_time_<format>", [](std::unordered_map<string, string> map) {
+		if (map.find("<format>") != map.end()) {
+			if ("<format>" != map["<format>"])
+				return Helper::getTime(map["<format>"], startTime);
+		}
+
+		return Helper::getTime("H:M:S", startTime);
 		});
 
 	PlaceholderAPI::registerServerPlaceholder("server_name", []() {
