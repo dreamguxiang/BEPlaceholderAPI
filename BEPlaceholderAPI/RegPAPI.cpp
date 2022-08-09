@@ -176,9 +176,6 @@ void regServerInit() {
 	PlaceholderAPI::registerServerPlaceholder("server_world_name", []() {
 		return Global<Level>->getLevelData().getLevelName();
 		});
-	PlaceholderAPI::registerServerPlaceholder("server_seed", []() {
-		return Global<PropertiesSettings>->getLevelSeed();
-		});
 	PlaceholderAPI::registerServerPlaceholder("server_difficulty", []() {
 		return S(Global<PropertiesSettings>->getDifficulty());
 		});
