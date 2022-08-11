@@ -26,7 +26,7 @@ void checkUpdate() {
             string info;
             int status = -1;
             if (!HttpGetSync(infoUrl, &status, &info, 60) || status != 200) {
-                logger.info("Unable to check for updates. Download failed! Error Code: {}", status);
+               // logger.info("Unable to check for updates. Download failed! Error Code: {}", status);
                 return;
             }
             nlohmann::json data1 = nlohmann::json::parse(info, nullptr, true, true);
