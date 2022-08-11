@@ -285,7 +285,7 @@ namespace RemoteCall {
 		}
 		return "Register Success";
 	}
-	
+
 	std::string registerStaticPlaceholder(std::string const& PluginName, std::string const& FuncName, std::string const& PAPIName,int num)
 	{
 		if (RemoteCall::hasFunc(PluginName, FuncName)) {
