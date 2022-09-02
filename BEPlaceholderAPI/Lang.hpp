@@ -4,7 +4,7 @@
 #pragma once
 #include <I18nAPI.h>
 
-static const I18N::LangData defaultLangData = {
+static const SingleFileI18N::LangData defaultLangData = {
     {"en_US", {
          {"papi.command.help", "§g-------BEPlaceholderAPI help -------\n§a/placeholder list   §bList of registered PAPI plugins\n§a/placeholder info [optional/plugin name]   §bGet detailed variable names\n§a/placeholder unregister <variable name/plugin name>   §bUnregister a variable name or plugin"},
          {"papi.command", "§6PlaceholderApi command system"},

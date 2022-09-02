@@ -125,7 +125,7 @@ void regPlayerInit() {
 	PlaceholderAPI::registerPlayerPlaceholder("player_max_hunger", [](Player* sp) {
 		string maxHunger = "";
 		auto plnbt = sp->getNbt();
-		json plnJ = json::parse(plnbt.get()->toJson(0));
+		nlohmann::json plnJ = nlohmann::json::parse(plnbt.get()->toJson(0));
 		for (auto& nbt : plnJ["Attributes"]) {
 			if (nbt["Name"] == "minecraft:player.hunger") {
 				maxHunger = std::to_string((double)nbt["Max"]);
