@@ -34,7 +34,7 @@ void regPlayerInit() {
 		});
 
 	PlaceholderAPI::registerPlayerPlaceholder("player_gamemode", [](Player* sp) {
-		return S(sp->getPlayerGameType());
+		return S((int)sp->getPlayerGameType());
 		});
 
 	PlaceholderAPI::registerPlayerPlaceholder("player_x", [](Player* sp) {
@@ -165,10 +165,10 @@ void regServerInit() {
 		});
 	
 	PlaceholderAPI::registerServerPlaceholder("server_version", []() {
-		return LL::getBdsVersion();
+		return ll::getBdsVersion();
 		});
 	PlaceholderAPI::registerServerPlaceholder("server_protocol_version", []() {
-		return S(LL::getServerProtocolVersion());
+		return S(ll::getServerProtocolVersion());
 		});
 	PlaceholderAPI::registerServerPlaceholder("server_total_entities", []() {
 		return S(Level::getAllEntities().size());
@@ -177,7 +177,7 @@ void regServerInit() {
 		return Global<Level>->getLevelData().getLevelName();
 		});
 	PlaceholderAPI::registerServerPlaceholder("server_difficulty", []() {
-		return S(Global<PropertiesSettings>->getDifficulty());
+		return S((int)Global<PropertiesSettings>->getDifficulty());
 		});
 	PlaceholderAPI::registerServerPlaceholder("server_on_allowlist", []() {
 		return S(Global<PropertiesSettings>->useAllowList());

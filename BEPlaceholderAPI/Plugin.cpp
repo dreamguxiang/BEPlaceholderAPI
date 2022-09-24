@@ -1,10 +1,11 @@
 #include "Global.h"
 #include <ServerAPI.h>
 #include "Lang.hpp"
+#include <windows.h>
 Logger logger(PLUGIN_NAME);
 
 inline void CheckProtocolVersion() {
-    auto currentProtocol = LL::getServerProtocolVersion();
+    auto currentProtocol = ll::getServerProtocolVersion();
     if (TARGET_BDS_PROTOCOL_VERSION != currentProtocol)
     {
         logger.warn("Protocol version not match, target version: {}, current version: {}.",
