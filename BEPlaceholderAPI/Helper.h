@@ -76,7 +76,7 @@ struct Vec4 {
 
 
 
-enum BlockActorType {
+enum class BlockActorType {
 	Undefined = 0x0,
 	Furnace = 0x1,
 	Chest = 0x2,
