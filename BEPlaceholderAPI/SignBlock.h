@@ -29,7 +29,7 @@ namespace signBlock {
 	};
 
 	inline void UpdateBlockPacket(int dimId, BlockPos bp, const unsigned int runtimeId, unsigned int layer = 1) {
-		auto dim = Global<Level>->getDimension(dimId);
+		auto dim = (Dimension*)Global<Level>->getDimension(dimId).mHandle.lock().get();
 		UpdateBlockPacket(dim, bp, runtimeId);
 	};
 }
