@@ -298,7 +298,7 @@ void ListenEvent() {
 }
 
 typedef std::chrono::high_resolution_clock timer_clock;
-THook(void, "?tick@ServerLevel@@UEAAXXZ", Level* a1) {
+THook(void, "?tick@Level@@UEAAXXZ", Level* a1) {
 	TIMER_START
 	original(a1);
 	TIMER_END
