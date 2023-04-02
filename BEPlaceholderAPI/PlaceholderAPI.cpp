@@ -312,7 +312,9 @@ namespace RemoteCall {
 
 	std::string translateString(std::string const& str, std::string const& xuid) 
 	{
-		return	PlaceholderAPI::translateString(str, Global<Level>->getPlayer(xuid));
+		string _str = str;
+		PlaceholderAPI::translateString(_str, Global<Level>->getPlayer(xuid));
+		return _str;
 	}
 
 	bool unRegisterPlaceholder(std::string const& str)
