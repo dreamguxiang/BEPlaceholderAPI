@@ -120,7 +120,7 @@ void regPlayerInit() {
 		});
 
 	PlaceholderAPI::registerPlayerPlaceholder("player_hunger", [](Player* sp) {
-		return S(sp->getAttribute(Player::HUNGER).getCurrentValue());
+		return S((int)sp->getAttribute(Player::HUNGER).getCurrentValue());
 		});
 	PlaceholderAPI::registerPlayerPlaceholder("player_max_hunger", [](Player* sp) {
 		string maxHunger = "";
