@@ -3,18 +3,18 @@
 
 ##### English | [简体中文](README_zh.md)
 
-### Documentation [Documentation](https://papi.litetitle.com)
+### Documentation [Documentation](https://papi.litebds.com)
 
 `BEPlaceholderAPI` is a plugin to add public variables to the game or plugin, plugin developers and owners to provide very rich and practical functions.
 
 ## For the server owner
 including but not limited to below:
 - Dynamic Sgin variables
-![](https://s1.328888.xyz/2022/05/22/dObe3.gif)
+
 - Plug-in public variables
 > For example: sidebar HeadShow and so on
 - Chat public variables
-![](https://s1.328888.xyz/2022/05/22/dOKvy.png)
+
 
 For each feature in this plugin, you can use the command "/papi" or revise the config file in "/plugins/BEPlaceholderAPI/" to turn it on and off at any time.
 
