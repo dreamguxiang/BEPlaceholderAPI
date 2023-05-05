@@ -5,4 +5,4 @@
 >A plugin to add public variables to the game or plugin
 
 [GitHub](https://github.com/dreamguxiang/BEPlaceholderAPI)
-[Get Started](zh-cn/使用方法/初始化程序)
+[Get Started](/README.md)
