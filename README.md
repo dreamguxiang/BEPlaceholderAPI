@@ -52,3 +52,7 @@ Please do not reproduce without permission, integration! This may keep it from e
 
 Extra Restrictions & Exceptions
 You can't distribute, integrate, etc. without my authorized permission
+
+
+**Thanks to [CloudFlare](https://www.cloudflare.com/) for CDN, DNS, DDoS protection, and security for my site.**
+[<img src="https://logonoid.com/images/thumbs/cloudflare-logo.png"/>](https://www.cloudflare.com/)
