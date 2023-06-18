@@ -26,8 +26,8 @@ jobs:
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: |
         mkdir D:/BDS
-        curl -L -o ${{ env.SDK_DIR }}/Tools/LINK.txt "https://raw.githubusercontent.com/LiteLDev/LiteLoaderBDS/develop/scripts/LINK.txt"
-        ServerLink=$(cat '${{ env.SDK_DIR }}/Tools/LINK.txt')
+        curl -L -o D:/BDS/LINK.txt "https://raw.githubusercontent.com/LiteLDev/LiteLoaderBDS/develop/scripts/LINK.txt"
+        ServerLink=$(cat 'D:/BDS/LINK.txt')
         curl -L -o D:/BDS/server.zip "$ServerLink"
         unzip D:/BDS/server.zip -d D:/BDS > /dev/null
       shell: bash
