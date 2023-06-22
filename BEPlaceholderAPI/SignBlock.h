@@ -9,6 +9,7 @@
 #include <MC/MinecraftPackets.hpp>
 #include <MC/Dimension.hpp>
 #include <MC/Packet.hpp>
+#include <mc/ExtendedStreamReadResult.hpp>
 
 using namespace std;
 

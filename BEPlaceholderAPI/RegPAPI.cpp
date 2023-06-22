@@ -161,7 +161,7 @@ void regServerInit() {
 		});
 	
 	PlaceholderAPI::registerServerPlaceholder("server_max_players", []() {
-		return  S(*((int*)Global<ServerNetworkHandler> + 188));
+		return  S(*((int*)Global<ServerNetworkHandler> + 192));
 		});
 	
 	PlaceholderAPI::registerServerPlaceholder("server_version", []() {
