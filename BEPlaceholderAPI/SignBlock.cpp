@@ -11,14 +11,19 @@ THook(void*, "?tick@BlockActor@@UEAAXAEAVBlockSource@@@Z",
 	BlockActor* _this, BlockSource* a2) {
 	if (Settings::Sign::Enabled) {
 		auto type = _this->getType();
-		if (type == BlockActorType::Sign) {
+		if (type == BlockActorType::Sign || type == BlockActorType::HangingSign) {
 			auto dim = SymCall("?getDimension@BlockSource@@UEAAAEAVDimension@@XZ", Dimension*, BlockSource*)(a2);
-			SignBlockActorMap.emplace(Vec4{_this->getPosition().toVec3(),dim->getDimensionId()});
+			SignBlockActorMap.emplace(Vec4{_this->getPosition().toVec3(),a2->getDimensionId()});
 		}
 	}
 	return original(_this, a2);
 }
 
+enum class SignTextSide : __int32
+{
+	Front = 0x0,
+	Back = 0x1,
+};
 
 #include <MC/BinaryStream.hpp>
 #include <SendPacketAPI.h>
@@ -28,14 +33,21 @@ void UpdateAllSignBlock() {
 		auto pos = i.vc.toBlockPos();
 		auto ba = bs->getBlockEntity(pos);
 		if (ba) {
-			SignBlockActor* BlockEntity = (SignBlockActor*)ba;
 			auto SignBlockActorNbt = ba->getNbt().get()->clone();
-			string text = SignBlockActorNbt->getString("Text");
+			auto signblock = (SignBlockActor*)ba;
+			auto back= SignBlockActorNbt->getCompound("BackText");
+			string backText = signblock->getMessage(SignTextSide::Back);
+			auto front = SignBlockActorNbt->getCompound("FrontText");
+			string frontText = signblock->getMessage(SignTextSide::Front);
+
 			for (Player* pl : Level::getAllPlayers()) {
-				string placeHolder = text;
-				PlaceholderAPI::translateString(placeHolder, pl);
-				if (text != placeHolder) {
-					SignBlockActorNbt->putString("Text", placeHolder);
+				string backplaceHolder = backText;
+				string frontplaceHolder = frontText;
+				if (!backplaceHolder.empty()) PlaceholderAPI::translateString(backplaceHolder, pl);
+				if (!frontplaceHolder.empty()) PlaceholderAPI::translateString(frontplaceHolder, pl);
+				if (backText != backText || frontText != frontplaceHolder) {
+					back->putString("Text", backplaceHolder);
+					front->putString("Text", frontplaceHolder);
 					BinaryStream bs;
 					bs.writeVarInt(pos.x); bs.writeUnsignedVarInt(pos.y); bs.writeVarInt(pos.z);
 					bs.writeCompoundTag(*SignBlockActorNbt);
