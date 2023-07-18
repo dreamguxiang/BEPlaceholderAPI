@@ -123,16 +123,21 @@ void regPlayerInit() {
 		return S((int)sp->getAttribute(Player::HUNGER).getCurrentValue());
 		});
 	PlaceholderAPI::registerPlayerPlaceholder("player_max_hunger", [](Player* sp) {
-		string maxHunger = "";
-		auto plnbt = sp->getNbt();
-		nlohmann::json plnJ = nlohmann::json::parse(plnbt.get()->toJson(0));
-		for (auto& nbt : plnJ["Attributes"]) {
-			if (nbt["Name"] == "minecraft:player.hunger") {
-				maxHunger = std::to_string((double)nbt["Max"]);
-				maxHunger = maxHunger.substr(0, maxHunger.find("."));
+		try{
+			string maxHunger = "";
+			auto plnbt = sp->getNbt();
+			nlohmann::json plnJ = nlohmann::json::parse(plnbt.get()->toJson(0));
+			for (auto& nbt : plnJ["Attributes"]) {
+				if (nbt["Name"] == "minecraft:player.hunger") {
+					maxHunger = std::to_string((double)nbt["Max"]);
+					maxHunger = maxHunger.substr(0, maxHunger.find("."));
+				}
 			}
+			return maxHunger;
 		}
-		return maxHunger;
+		catch (...) {
+			return (std::string)"20";
+		}
 		});
 
 	

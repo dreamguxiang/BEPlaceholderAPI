@@ -13,7 +13,7 @@ THook(void*, "?tick@BlockActor@@UEAAXAEAVBlockSource@@@Z",
 		auto type = _this->getType();
 		if (type == BlockActorType::Sign || type == BlockActorType::HangingSign) {
 			auto dim = SymCall("?getDimension@BlockSource@@UEAAAEAVDimension@@XZ", Dimension*, BlockSource*)(a2);
-			SignBlockActorMap.emplace(Vec4{_this->getPosition().toVec3(),a2->getDimensionId()});
+			SignBlockActorMap.emplace(Vec4{ _this->getPosition().toVec3(),a2->getDimensionId() });
 		}
 	}
 	return original(_this, a2);
@@ -35,7 +35,7 @@ void UpdateAllSignBlock() {
 		if (ba) {
 			auto SignBlockActorNbt = ba->getNbt().get()->clone();
 			auto signblock = (SignBlockActor*)ba;
-			auto back= SignBlockActorNbt->getCompound("BackText");
+			auto back = SignBlockActorNbt->getCompound("BackText");
 			string backText = signblock->getMessage(SignTextSide::Back);
 			auto front = SignBlockActorNbt->getCompound("FrontText");
 			string frontText = signblock->getMessage(SignTextSide::Front);
@@ -45,7 +45,7 @@ void UpdateAllSignBlock() {
 				string frontplaceHolder = frontText;
 				if (!backplaceHolder.empty()) PlaceholderAPI::translateString(backplaceHolder, pl);
 				if (!frontplaceHolder.empty()) PlaceholderAPI::translateString(frontplaceHolder, pl);
-				if (backText != backText || frontText != frontplaceHolder) {
+				if (backText != backplaceHolder || frontText != frontplaceHolder) {
 					back->putString("Text", backplaceHolder);
 					front->putString("Text", frontplaceHolder);
 					BinaryStream bs;
@@ -57,6 +57,46 @@ void UpdateAllSignBlock() {
 			}
 		}
 	}
+}
+
+unordered_map<SignBlockActor*, pair<string, string>> SignTextCache;
+
+THook(bool, "?_canChangeSign@SignBlock@@CA_NAEAVSignBlockActor@@AEAVPlayer@@@Z",
+	SignBlockActor* _this, Player* pl) {
+	auto res = original(_this, pl);
+	if (Settings::Sign::Enabled && res) {
+		string frontplaceHolder = _this->getMessage(SignTextSide::Front);
+		string backplaceHolder = _this->getMessage(SignTextSide::Back);
+		if (!frontplaceHolder.empty()) PlaceholderAPI::translateString(frontplaceHolder, pl);
+		if (!backplaceHolder.empty()) PlaceholderAPI::translateString(backplaceHolder, pl);
+		SignTextCache.emplace(_this, pair<string, string>{ frontplaceHolder, backplaceHolder });
+	}
+	return res;
+}
+
+TInstanceHook(void, "?handle@ServerNetworkHandler@@UEAAXAEBVNetworkIdentifier@@V?$shared_ptr@VBlockActorDataPacket@@@std@@@Z",
+	ServerNetworkHandler, NetworkIdentifier* a2, UINT64* a3) {
+
+	auto bs = this->getServerPlayer(*a2, 0)->getBlockSource();
+	auto pos = (BlockPos*)(*a3 + 48i64);
+	auto signblock = (SignBlockActor*)bs->getBlockEntity(*pos);
+	if (signblock) {
+		auto it = SignTextCache.find(signblock);
+		if (it != SignTextCache.end()) {
+			auto SignBlockActorNbt = (CompoundTag*)(*a3 + 64i64);
+			auto front = SignBlockActorNbt->getCompound("FrontText");
+			if (!it->second.first.empty() && front->getString("Text") == it->second.first) {
+				front->putString("Text", signblock->getMessage(SignTextSide::Front));
+			}
+			auto back = SignBlockActorNbt->getCompound("BackText");
+			if (!it->second.second.empty() && back->getString("Text") == it->second.second) {
+				back->putString("Text", signblock->getMessage(SignTextSide::Back));
+			}
+			SignTextCache.erase(it);
+		}
+	}
+
+	return original(this, a2, a3);
 }
 
 typedef std::chrono::high_resolution_clock timer_clock;
@@ -73,6 +113,6 @@ void initSchedule() {
 	Schedule::repeat([] {
 		UpdateAllSignBlock();
 		SignBlockActorMap.clear();
-	}, 20);
+		}, 20);
 }
 
