@@ -186,13 +186,13 @@ PAPI.getValue("server_tps")
 
 ### 获得需要玩家对象的变量值
 
-`PAPI.getValueByPlayer(PAPIName,player)`
+`PAPI.getValueByPlayer(PAPIName,xuid)`
 
 - 参数：
   - PAPIName : `String`   
       变量名
-  - player : `Player`   
-      玩家对象
+  - xuid : `String`   
+      玩家xuid
 - 返回值
   - 变量值
   - 类型: `String`
