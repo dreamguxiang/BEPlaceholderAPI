@@ -196,13 +196,13 @@ PAPI.getValue("server_tps")
 
 ### Get the value of the variable required for the player object
 
-`PAPI.getValueByPlayer(PAPIName,player)`
+`PAPI.getValueByPlayer(PAPIName,xuid)`
 
 - parameters:
 	- PAPIName : `String`
 		The variable name
-	- player : `Player`
-		The player object
+	- xuid: `String`
+		The player xuid
 - the return value
 	- a variable's value
 	- Type: `String`
