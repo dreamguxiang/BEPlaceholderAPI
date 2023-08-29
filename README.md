@@ -3,7 +3,7 @@
 
 ##### English | [简体中文](README_zh.md)
 
-### Documentation [Documentation](https://papi.litebds.com)
+### Documentation [Documentation](https://papi.qingyuga.me)
 
 `BEPlaceholderAPI` is a plugin to add public variables to the game or plugin, plugin developers and owners to provide very rich and practical functions.
 
