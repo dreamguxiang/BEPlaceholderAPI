@@ -1,113 +1,48 @@
-name: Build BEPlaceholderAPI
-
-on: [push, workflow_dispatch]
-
-env:
-  # Path to the solution file relative to the root of the project.
-  SOLUTION_FILE_PATH: ./BEPlaceholderAPI.sln
-
-  # Configuration type to build.
-  # You can convert this to a build matrix if you need coverage of multiple configuration types.
-  # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
-  BUILD_CONFIGURATION: Release
-  Platform: X64
-  VERSION_FILE_PATH: ./BEPlaceholderAPI/Version.h
-
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+  
 jobs:
-  pre-process:
-    runs-on: windows-2022
-
+  build:
+    runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: 'true'
+      - uses: actions/checkout@v4
 
-    - name: Download Server
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: |
-        mkdir D:/BDS
-        curl -L -o D:/BDS/LINK.txt "https://raw.githubusercontent.com/LiteLDev/LiteLoaderBDS/develop/scripts/LINK.txt"
-        ServerLink=$(cat 'D:/BDS/LINK.txt')
-        curl -L -o D:/BDS/server.zip "$ServerLink"
-        unzip D:/BDS/server.zip -d D:/BDS > /dev/null
-      shell: bash
+      - uses: xmake-io/github-action-setup-xmake@v1
       
-    - name: Build Library
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: |
-        cd SDK/tools
-        PeEditor.exe -l --pdb D:/BDS/bedrock_server.pdb -o ../lib
-      shell: cmd
-      
-    - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v1.1
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/AppData/Local/.xmake
+          key: xmake-${{ hashFiles('xmake.lua') }}
+          restore-keys: |
+            xmake-
 
-#     - name: Restore NuGet packages
-#       working-directory: ${{env.GITHUB_WORKSPACE}}
-#       run: nuget restore ${{env.SOLUTION_FILE_PATH}}
-    
-    - name: Change PLUGIN_VERSION_STATUS_BETA
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      if: false == startsWith(github.ref, 'refs/tags/')
-      run: |
-        sed -r -i 's/#define\s+PLUGIN_VERSION_STATUS\s+PLUGIN_VERSION_\w+/#define PLUGIN_VERSION_STATUS   PLUGIN_VERSION_BETA/' ${{env.VERSION_FILE_PATH}}
-        sed -r -i 's/#define\s+PLUGIN_VERSION_BUILD\s+.*/#define PLUGIN_VERSION_BUILD  ${{ github.run_number }}\r/' ${{env.VERSION_FILE_PATH}}
-      shell: bash
+      - run: |
+          xmake repo -u
 
-    - name: Change PLUGIN_VERSION_STATUS_RELEASE
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      if: startsWith(github.ref, 'refs/tags/')
-      run: |
-        sed -r -i 's/#define\s+PLUGIN_VERSION_STATUS\s+PLUGIN_VERSION_\w+/#define PLUGIN_VERSION_STATUS   PLUGIN_VERSION_RELEASE/' ${{env.VERSION_FILE_PATH}}
-        sed -r -i 's/#define\s+PLUGIN_VERSION_BUILD\s+.*/#define PLUGIN_VERSION_BUILD  ${{ github.run_number }}\r/' ${{env.VERSION_FILE_PATH}}
-      shell: bash
+      - run: |
+          xmake f -a x64 -m release -p windows -v -y
 
-    - name: Build Plugin
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      # Add additional options to the MSBuild command line here (like platform or verbosity level).
-      # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
-      run: |
-        MSBuild.exe ${{env.SOLUTION_FILE_PATH}} -property:Configuration=${{env.BUILD_CONFIGURATION}}
-      shell: bash
-    
+      - run: |
+          xmake -v -w -y
 
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ github.event.repository.name }}-windows-x64-${{ github.sha }}
+          path: |
+            bin/
 
-    - name: copy dll and pdb files
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: |
-        mkdir output
-        mkdir output/plugins
-        cp -f x64/Release/*.dll output/plugins
-        mkdir output/plugins/lib/
-        cp -f x64/Release/*.pdb output/plugins/lib     
-        cp -f Lib/*.* output/plugins/Lib
-      shell: bash
-    
-    - name: upload files
-      uses: actions/upload-artifact@v2
-      with:
-        name: BEPlaceholderAPI
-        path: ${{ github.workspace }}/output/
+  clang-format:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
 
-    - name: Archive
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      if: startsWith(github.ref, 'refs/tags/')
-      run: Compress-Archive -Path output/* output/BEPlaceholderAPI.zip
+      - run: |
+          choco install llvm -y --version=17.0.6
 
-    - name: Prepare for creating Release
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      id: rel
-      if: startsWith(github.ref, 'refs/tags/')
-      run: |
-        echo ::set-output name=tag::${GITHUB_REF#refs/tags/*}
-        mv output/BEPlaceholderAPI.zip output/BEPlaceholderAPI-${GITHUB_REF#refs/tags/*}.zip
-      shell: bash
-
-    - name: Create New Release
-      uses: softprops/action-gh-release@v1
-      if: startsWith(github.ref, 'refs/tags/')
-      with:
-        # body_path: ${{ github.workspace }}/CHANGELOG.txt
-        files: ${{ github.workspace }}\output\BEPlaceholderAPI-${{ steps.rel.outputs.tag }}.zip
-      env:
-          GITHUB_REPOSITORY: LiteLDev/BEPlaceholderAPI 
+      - name: clang-format
+        run: |
+          Get-ChildItem src/ -Filter *.cpp -Recurse | ForEach-Object { clang-format --dry-run -Werror $_.FullName }
+          Get-ChildItem src/ -Filter *.h -Recurse | ForEach-Object { clang-format --dry-run -Werror $_.FullName }

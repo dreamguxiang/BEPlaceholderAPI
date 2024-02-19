@@ -1,58 +1,35 @@
-# BEPlaceholderAPI
-<img src="https://s1.328888.xyz/2022/05/22/dOkzd.png">
+# LeviLamina Plugin Template
 
-##### English | [简体中文](README_zh.md)
+A LeviLamina plugin template
 
-### Documentation [Documentation](https://papi.qingyuga.me)
+This plugin is a template for developing LeviLamina plugins.
 
-`BEPlaceholderAPI` is a plugin to add public variables to the game or plugin, plugin developers and owners to provide very rich and practical functions.
+## Install
 
-## For the server owner
-including but not limited to below:
-- Dynamic Sgin variables
+Generate a new repository from this template.
 
-- Plug-in public variables
-> For example: sidebar HeadShow and so on
-- Chat public variables
+## Usage
 
+Before using this plugin template, make sure that you have installed XMake and a Minecraft Bedrock Server with LeviLamina.
 
-For each feature in this plugin, you can use the command "/papi" or revise the config file in "/plugins/BEPlaceholderAPI/" to turn it on and off at any time.
+1. Clone the new repository into a local folder.
 
-*You can disable the above functions*
+1. Change the plugin name and the expected LeviLamina version in `xmake.lua`.
 
-## For plug-in developers
-- <details><summary>Script plug-in fast access API
-    </summary>
-    <span>Js language API</span>
-    <img src="https://s1.328888.xyz/2022/05/22/dO3IW.png">
-    <span>Lua language API</span>
-    <img src="https://s1.328888.xyz/2022/05/22/dOn1Q.png">
-    </details>
+1. Add your code.
 
+1. Run `xmake repo -u` in the root of the repository.
 
-### 💻Download
-Please go to [Releases page](https://github.com/dreamguxiang/BEPlaceholderAPI/releases) to download the latest version.
+1. Run `xmake` to build the plugin.
 
-### 🎯 Install & Usage
+Now the build is complete at `bin/`.
 
-This plugin is developed based on [LiteLoaderBDS](https://github.com/LiteLDev/LiteLoaderBDS), LL provides a powerful API system that greatly reduces development and maintenance costs, so to load BEPlaceholderAPI you need to install LiteLoaderBDS and drop it into its generated s Plugins folder in order to load and run correctly.
+## Contributing
 
-### 🏆 Acknowledgement
+Ask questions by creating an issue.
 
-- Thank Major development of [dreamguxiang](https://github.com/dreamguxiang).
-- Thank [HuoHuas001](https://github.com/HuoHuas001)'s help and contribution.
-- Thank Help and suggestions from [LiteLDev](https://github.com/LiteLDev) development team members.
+PRs accepted.
 
-### 📞 Contact
+## License
 
-NULL
-
-⚠️ Warning
-Please do not reproduce without permission, integration! This may keep it from ever being updated
-
-Extra Restrictions & Exceptions
-You can't distribute, integrate, etc. without my authorized permission
-
-
-**Thanks to [CloudFlare](https://www.cloudflare.com/) for CDN, DNS, DDoS protection, and security for my site.**
-[<img src="https://logonoid.com/images/thumbs/cloudflare-logo.png"/>](https://www.cloudflare.com/)
+CC0-1.0 © LiteLDev
